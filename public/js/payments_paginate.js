@@ -1,23 +1,15 @@
 window.onload = function () {
 
-    // function include(url) {
-    //     var script = document.createElement('script');
-    //     script.src = url;
-    //     document.getElementsByTagName('head')[0].appendChild(script);
-    // }
-    // include('js/components/grid.js');
-
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
 // register the grid component
     Vue.component('demo-grid', {
         template: '#grid-template',
         props: {
-            data: Array,
             columns: Array,
-            filterKey: String,
-            actions: Array
-
+            actions: Array,
+            request_url: '',
+            searchQuery: ''
         },
         data: function () {
             var sortOrders = {};
@@ -25,49 +17,14 @@ window.onload = function () {
                 sortOrders[key.key] = 1
             });
             return {
+                gridData: Array,
+                paginateData: {},
                 sortKey: '',
                 sortOrders: sortOrders,
-                page: 1,
-                paginateCount: 10
+                dataPage: 1
             }
         },
         computed: {
-            filteredData: function () {
-
-                var sortKey = this.sortKey;
-                var filterKey = this.filterKey && this.filterKey.toLowerCase();
-                var order = this.sortOrders[sortKey] || 1;
-                var data = this.data;
-                if (filterKey) {
-                    data = data.filter(function (row) {
-                        return Object.keys(row).some(function (key) {
-                            return String(row[key]).toLowerCase().indexOf(filterKey) > -1
-                        })
-                    })
-                }
-                if (sortKey) {
-                    data = data.slice().sort(function (a, b) {
-                        a = a[sortKey];
-                        b = b[sortKey];
-                        return (a === b ? 0 : a > b ? 1 : -1) * order
-                    })
-                }
-                return data
-            },
-
-            paginatedData: function() {
-                var start = this.paginateCount * (this.page -1);
-                console.log(start);
-                return this.filteredData.slice(start, start+this.paginateCount);
-            },
-
-            paginate: function(){
-                var pages = [];
-                for (var i = 0; i <  Math.ceil(this.filteredData.length / this.paginateCount); i++) {
-                    pages.push({'number' : i+1, 'title': (i+1), 'current' : (i+1) == this.page});
-                }
-                return pages;
-                }
             },
         filters: {
             capitalize: function (str) {
@@ -77,10 +34,12 @@ window.onload = function () {
         methods: {
             sortBy: function (key) {
                 this.sortKey = key;
-                this.sortOrders[key] = this.sortOrders[key] * -1
+                this.sortOrders[key] = this.sortOrders[key] * -1;
+                this.getRequest();
             },
             setPage: function (page) {
-                this.page = page;
+                this.dataPage = page;
+                this.getRequest();
             },
             runAction: function(action, method, id, message){
                 if (action) {
@@ -96,13 +55,49 @@ window.onload = function () {
                         modal.showModal = true;
                     }
                 }
+            },
+            getRequest: function() {
+                var data = {
+                    page: this.dataPage,
+                    sort: this.sortKey,
+                    dir: this.sortOrders[this.sortKey]
+                };
+                this.$http.get(this.request_url, {params: data}).then(function(response){
+                    console.log(response);
+                    this.gridData = response.data.payments.data;
+                    //console.log(response.data);
+                    this.paginateData = {
+                        from: response.data.payments.from,
+                        to: response.data.payments.to,
+                        total: response.data.payments.total,
+                        per_page: response.data.payments.per_page,
+                        current_page: response.data.payments.current_page,
+                        last_page: response.data.payments.last_page,
+                        next_page_url: response.data.payments.next_page_url,
+                        prev_page_url: response.data.payments.prev_page_url
+                    };
+                    //console.log(this.gridData, this.paginateData);
+                }).catch(function (error) {
+                    console.log(error);
+                });
             }
-
+        },
+        mounted: function(){
+            this.getRequest();
         }
+        // watch: {
+        //     'dataPage': function (){
+        //         this.getRequest();
+        //     }
+            // 'sortKey': function () {
+            //     this.getRequest();
+            // }
+
+        //}
     });
 
 // экземпляр - грид
-    var demo = new Vue({
+    var GridPaginate = new Vue({
         el: '#demoGrid',
         data: {
             searchQuery: '',
@@ -115,7 +110,7 @@ window.onload = function () {
                 {'key':'payment_status', 'value': 'Статус'},
                 {'key':'created_at', 'value': 'Дата'}
             ],
-            gridData: [],
+            url: '/payments-data-paginate',
             actions: [
                 {
                     'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
@@ -131,25 +126,6 @@ window.onload = function () {
                     'message': 'Do you really want to delete payment?'
                 }
             ]
-
-        },
-        methods: {
-            getData : function() {
-
-                this.$http.get('/payments-data').then(function(response){
-                    console.log(response.data.payments);
-                    this.gridData = response.data.payments;
-                    //colsole.log(this.greedData)
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
-
-        },
-
-        mounted: function() {
-
-            this.getData();
         }
     });
 
