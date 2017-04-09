@@ -58,12 +58,19 @@ window.onload = function () {
                 }
             },
             getRequest: function() {
-                var data = {
-                    page: this.dataPage,
-                    sort: this.sortKey,
-                    dir: this.sortOrders[this.sortKey],
-                    search: this.searchQuery
-                };
+                var data = {};
+                    page: this.dataPage
+                if (this.dataPage > 0) {
+                    data.page = this.dataPage;
+                }
+                if (this.sortKey) {
+                    data.sort = this.sortKey;
+                    data.dir =this.sortOrders[this.sortKey];
+                }
+                if (this.searchQuery) {
+                    data.search = this.searchQuery;
+                }
+
                 this.loading = true;
                 this.$http.get(this.request_url, {params: data}).then(function(response){
                     this.loading = false;

@@ -59,8 +59,10 @@ class PaymentController extends Controller
             $payments = $payments->orderBy($request->get('sort'), $order);
         }
         return json_encode([
+            'sql' => $payments->toSql(),
             'payments' => $payments->paginate(config('vue.paginate')),
             'request' => $request->all(),
+            
         ]);
     }
 

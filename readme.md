@@ -2,6 +2,6 @@
 
 ## Test project Vue
 
-####Lazy load tree. Grid with paginate, sort, seach. Grid with paginate, sort, search by Ajax.
+#### Lazy load tree. Grid with paginate, sort, seach. Grid with paginate, sort, search by Ajax.
 
-<p align="center"><img src="/resources/assets/images/ue.png"></p>
+![Vue logo](/resources/assets/images/ue.png)
