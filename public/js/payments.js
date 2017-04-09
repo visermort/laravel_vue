@@ -55,6 +55,9 @@ window.onload = function () {
             },
 
             paginatedData: function() {
+                if (this.page > Math.ceil(this.filteredData.length / this.paginateCount)){
+                    this.page = 1;
+                }
                 var start = this.paginateCount * (this.page -1);
                 console.log(start);
                 return this.filteredData.slice(start, start+this.paginateCount);

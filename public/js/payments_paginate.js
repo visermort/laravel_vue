@@ -85,6 +85,10 @@ window.onload = function () {
                     this.loading = false;
                     console.log(error);
                 });
+            },
+            makeSeach: function (){
+                this.dataPage = 1;
+                this.getRequest();
             }
         },
         mounted: function(){

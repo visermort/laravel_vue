@@ -10,7 +10,7 @@
                 <input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery" >
             </div>
             <div class="col-sm-2">
-                <button class="btn btn-default demo-grid__search_button" v-on:click.prevent="getRequest()" href="#" >Search</button>
+                <button class="btn btn-default demo-grid__search_button" v-on:click.prevent="makeSeach()" href="#" >Search</button>
             </div>
         </div>
         <div class="grid-data__preloader" v-if="loading" id="fountainG">
