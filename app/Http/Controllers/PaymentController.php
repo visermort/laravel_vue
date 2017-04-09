@@ -66,4 +66,12 @@ class PaymentController extends Controller
         ]);
     }
 
+    public function view($paymentId)
+    {
+        return [
+            'object' => Payment::find($paymentId),
+            'template' => 'payment'
+        ];
+    }
+
 }

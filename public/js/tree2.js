@@ -10,7 +10,9 @@ window.onload = function () {
             return {
                 status: 'promised', //promised, open, close
                 childData: {},
-                loading: false
+                loading: false,
+                objectTemplate: '',//по значению будет включаться нужный блок (шаблон)
+                objectData: {}//данные объкта
             }
         },
         computed: {
@@ -58,21 +60,50 @@ window.onload = function () {
                 } else {
                     this.status = 'document';
                 }
+            },
+            //клик на объект
+            getObject: function(url){
+                console.log(url);
+                //если objectTemplate пустой, то запрос на получение данных
+                if (this.objectTemplate == '') {
+                    this.loading = true;
+                    this.$http.get(url).then(function (response) {
+                        this.loading = false;
+                        console.log(response.data);
+                        this.objectData = response.data.object;
+                        this.objectTemplate = response.data.template;
+                        tree.objectsData = this.objectData;
+                        tree.objectsTemplate = this.objectTemplate;
+                        console.log(tree.objectsData, tree.objectsTemplate)
+
+                    }).catch(function (error) {
+                        this.loading = false;
+                        console.log(error);
+                    });
+                } else {
+                    tree.objectsData = this.objectData ? this.objectData : {};
+                    tree.objectsTemplate = this.objectTemplate;
+                    console.log(tree.objectsData, tree.objectsTemplate)
+                }
+
             }
         }
     });
 
 
+
 // boot up the demo
     var tree = new Vue({
-        el: '#tree',
+        el: '#goods',
         data: {
-            treeData: []
+            treeData: [],
+            objectsData: {},
+            objectsTemplate: ''
         },
         methods: {
-            getChilds: function($url){
+            getChilds: function(url){
 
-                this.$http.get($url).then(function(response){
+                this.$http.get(url).then(function(response){
                     console.log(response.data);
                     this.treeData = response.data;
                 }).catch(function (error) {

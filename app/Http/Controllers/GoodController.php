@@ -78,9 +78,10 @@ class GoodController extends Controller
         $goods = Good::all();
         $goods = $goods->each(function ($item, $key) {
             $item['id'] = $item->goods_id;
-            $item['title'] = $item->goods_name.' '.$item->goods_price;
+            $item['title'] = $item->goods_name.' price '.$item->goods_price;
             $item['isFolder'] = true;
-            $item['childsLink'] = '/api/orders2/'.$item->goods_id;
+            $item['childsLink'] = '/api/orders2/'.$item->goods_id;//ссылка на дочерние
+            $item['href'] = '/api/good/'.$item->goods_id;//ссылка на объект
         });
         return json_encode($goods);
     }
@@ -96,9 +97,10 @@ class GoodController extends Controller
         $orders = $orders->each(function ($item, $key) {
             $item['id'] = $item->order_id;
             $item['title'] = 'Count '.$item->order_count.' summ '.$item->order_summ.' client '.
-                $item->order_client_name.' '.$item->order_client_address;
+                $item->order_client_name;
             $item['isFolder'] = true;
             $item['childsLink'] = '/api/payment/' . $item->order_id;
+            $item['href'] = '/api/order/'.$item->order_id;//ссылка на объект
         });
         return json_encode($orders);
     }
@@ -113,12 +115,28 @@ class GoodController extends Controller
         $payments = Payment::where('payment_order_id', $order_id)->get();
         $payments = $payments->each(function ($item, $key) {
             $item['id'] = $item->payment_id;
-            $item['title'] = 'Date '.$item->created_at.' summ '.$item->payment_summ.' by '.
-                $item->payment_client_name.'. Status '.$item->paymentStatus();
+            $item['title'] = 'From '.$item->created_at.', summ '.$item->payment_summ.'. Status '.$item->paymentStatus();
             $item['isFolder'] = false;
             $item['childsLink'] = '';
+            $item['href'] = '/api/payments/'.$item->payment_id;//ссылка на объект
         });
         return json_encode($payments);
     }
-    
+
+    public function view($goodId)
+    {
+        return [
+            'object' => Good::find($goodId),
+            'template' => 'good'
+        ];
+    }
+
+    public function orderView($orderId)
+    {
+        return [
+            'object' => Order::find($orderId),
+            'template' => 'order'
+        ];
+    }
+
 }

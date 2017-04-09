@@ -40,12 +40,16 @@ Route::get('/tree2', 'GoodController@startTree2');
 Route::get('/api/goods2', 'GoodController@get2');
 Route::get('/api/orders2/{good_id}', 'GoodController@orders2');
 Route::get('/api/payment/{order_id}', 'GoodController@payment');
-
+//дерево - вывод объектов
+Route::get('/api/good/{good_id}', 'GoodController@view');
+Route::get('/api/order/{order_id}', 'GoodController@orderView');
+Route::get('/api/payments/{payment_id}', 'PaymentController@view');
 
 //datagreed
 Route::get('/payments', 'PaymentController@index');
 Route::get('/payments-data', 'PaymentController@getData');
 Route::post('/payments/delete', 'PaymentController@delete');
+
 
 //datagreed ajax paginate
 Route::get('/payments-paginate', 'PaymentController@indexPaginate');
