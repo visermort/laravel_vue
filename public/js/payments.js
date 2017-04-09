@@ -15,9 +15,7 @@ window.onload = function () {
         props: {
             data: Array,
             columns: Array,
-            filterKey: String,
             actions: Array
-
         },
         data: function () {
             var sortOrders = {};
@@ -28,14 +26,15 @@ window.onload = function () {
                 sortKey: '',
                 sortOrders: sortOrders,
                 page: 1,
-                paginateCount: 10
+                paginateCount: 10,
+                searchQuery: ''
             }
         },
         computed: {
             filteredData: function () {
 
                 var sortKey = this.sortKey;
-                var filterKey = this.filterKey && this.filterKey.toLowerCase();
+                var filterKey = this.searchQuery && this.searchQuery.toLowerCase();
                 var order = this.sortOrders[sortKey] || 1;
                 var data = this.data;
                 if (filterKey) {
@@ -158,8 +157,8 @@ window.onload = function () {
     Vue.component('modal-component', {
         template: '#modal-template',
         props: {
-            componenturl: '',
-            componentstatus: true
+            component_url: '',
+            component_status: true
         },
         methods: {
             close: function() {
@@ -172,7 +171,7 @@ window.onload = function () {
                 this.$http.post(modal.url, {
                     id: modal.id
                 }).then(function(response){
-                     console.log(response);
+                    console.log(response);
                     if (response.data ) {
                         console.log(response.data);
                         this.postMessage(response.data.status, response.data.message);

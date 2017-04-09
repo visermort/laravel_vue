@@ -3,13 +3,12 @@ window.onload = function () {
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
 // register the grid component
-    Vue.component('demo-grid', {
-        template: '#grid-template',
+    Vue.component('grid-paginate-ajax', {
+        template: '#grid-template-ajax',
         props: {
             columns: Array,
             actions: Array,
-            request_url: '',
-            searchQuery: ''
+            request_url: ''
         },
         data: function () {
             var sortOrders = {};
@@ -21,7 +20,9 @@ window.onload = function () {
                 paginateData: {},
                 sortKey: '',
                 sortOrders: sortOrders,
-                dataPage: 1
+                dataPage: 1,
+                searchQuery: '',
+                loading: false
             }
         },
         computed: {
@@ -60,9 +61,12 @@ window.onload = function () {
                 var data = {
                     page: this.dataPage,
                     sort: this.sortKey,
-                    dir: this.sortOrders[this.sortKey]
+                    dir: this.sortOrders[this.sortKey],
+                    search: this.searchQuery
                 };
+                this.loading = true;
                 this.$http.get(this.request_url, {params: data}).then(function(response){
+                    this.loading = false;
                     console.log(response);
                     this.gridData = response.data.payments.data;
                     //console.log(response.data);
@@ -78,6 +82,7 @@ window.onload = function () {
                     };
                     //console.log(this.gridData, this.paginateData);
                 }).catch(function (error) {
+                    this.loading = false;
                     console.log(error);
                 });
             }
@@ -85,15 +90,6 @@ window.onload = function () {
         mounted: function(){
             this.getRequest();
         }
-        // watch: {
-        //     'dataPage': function (){
-        //         this.getRequest();
-        //     }
-            // 'sortKey': function () {
-            //     this.getRequest();
-            // }
-
-        //}
     });
 
 // экземпляр - грид
@@ -134,8 +130,8 @@ window.onload = function () {
     Vue.component('modal-component', {
         template: '#modal-template',
         props: {
-            componenturl: '',
-            componentstatus: true
+            component_url: '',
+            component_status: true
         },
         methods: {
             close: function() {

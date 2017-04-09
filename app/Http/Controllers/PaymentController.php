@@ -25,14 +25,14 @@ class PaymentController extends Controller
                 'id' => 'required|exists:payments,payment_id',
             ]);
         if ($validator->fails()) {
-            return json_encode(['status'=> false, 'message' => 'Неправильные данные']);
+            return json_encode(['status'=> false, 'message' => 'Wrong data']);
         }
         if (($request->id % 2) == 0) {
-            return json_encode(['status'=> true, 'message' => 'Операция успешно выполнена', 'id'=> $request->id]);
+            return json_encode(['status'=> true, 'message' => 'Payment deleted - test', 'id'=> $request->id]);
         } else {
             return json_encode([
                 'status'=> false,
-                'message' => 'Ошибка при выполнении операции для нечётных записей - тест',
+                'message' => 'Error deleting odd payment - test',
                 'id'=> $request->id
             ]);
         }
@@ -45,14 +45,21 @@ class PaymentController extends Controller
 
     public function getDataPaginate(Request $request)
     {
+        $payments = new Payment;
+        if ($request->has('search')) {
+            $payments = $payments->where('payment_id', 'like', '%'.$request->get('search').'%');
+            $payments = $payments->orWhere('payment_order_id', 'like', $request->get('search').'%');
+            $payments = $payments->orWhere('payment_summ', 'like', $request->get('search').'%');
+            $payments = $payments->orWhere('payment_client_name', 'like', $request->get('search').'%');
+            $payments = $payments->orWhere('payment_client_phone', 'like', $request->get('search').'%');
+        }
+
         if ($request->has('sort')) {
             $order = $request->get('dir') == 1 ? 'asc' : 'desc';
-            $payments = Payment::orderBy($request->get('sort'), $order)->paginate(config('vue.paginate'));
-        } else {
-            $payments = Payment::paginate(config('vue.paginate'));
+            $payments = $payments->orderBy($request->get('sort'), $order);
         }
         return json_encode([
-            'payments' => $payments,
+            'payments' => $payments->paginate(config('vue.paginate')),
             'request' => $request->all(),
         ]);
     }

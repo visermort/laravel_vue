@@ -8,18 +8,18 @@
                     <div class="panel-heading">Billings</div>
 
                     <div class="demo-grid" id="demoGrid">
-                        <form class="demo-grid__search_form col-sm-6" id="search" >
-                            <div class="col-sm-2">
-                                <label for="form-search-input-query">Search</label>
-                            </div>
-                            <div class="col-sm-10">
-                                <input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery">
-                            </div>
-                        </form>
+                        {{--<form class="demo-grid__search_form col-sm-6" id="search" >--}}
+                            {{--<div class="col-sm-2">--}}
+                                {{--<label for="form-search-input-query">Search</label>--}}
+                            {{--</div>--}}
+                            {{--<div class="col-sm-10">--}}
+                                {{--<input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery">--}}
+                            {{--</div>--}}
+                        {{--</form>--}}
                         <demo-grid
                                 :data="gridData"
                                 :columns="gridColumns"
-                                :filter-key="searchQuery"
+                                {{--:filter-key="searchQuery"--}}
                                 :actions="actions">
                         </demo-grid>
                     </div>
@@ -28,15 +28,6 @@
         </div>
     </div>
 
-    <!-- modal -->
-    <div id="modal">
-        <modal-component
-                v-if="showModal"
-                v-on:close="showModal = false"
-                :componenturl="url"
-                :componentstatus="status" >
-        </modal-component>
-    </div>
 
     {{--file with component templates--}}
     @include('templates.grid');

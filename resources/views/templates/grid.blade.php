@@ -2,6 +2,14 @@
 <!-- grid template -->
 <script type="text/x-template" id="grid-template">
     <div class="grid-data">
+        <div class="demo-grid__search_form col-sm-6" id="search" >
+            <div class="col-sm-2">
+                <label for="form-search-input-query">Search</label>
+            </div>
+            <div class="col-sm-10">
+                <input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery">
+            </div>
+        </div>
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
             <tr>
@@ -42,24 +50,34 @@
     </div>
 </script>
 
+<!-- modal -->
+<div id="modal">
+    <modal-component
+            v-if="showModal"
+            v-on:close="showModal = false"
+            :component_url="url"
+            :component_status="status">
+    </modal-component>
+</div>
+
 <!-- template for the modal component -->
 <script type="text/x-template" id="modal-template">
     <transition name="modal">
         <div class="modal-mask" v-on:click="$emit('close')" >
             <div class="modal-wrapper"  >
-                <div class="modal-container modal-form" :class="{modalerror: componentstatus == false}" v-on:click.stop >
+                <div class="modal-container modal-form" :class="{modalerror: component_status == false}" v-on:click.stop >
 
                     <div class="modal-form__header">
-                        <div class="modal-form__header_text" v-html="title" ></div>
+                        <div class="modal-form__header_text" >@{{ title }}</div>
                     </div>
 
                     <div class="modal-form__body">
-                        <div class="modal-form__body_message" v-html="message"></div>
+                        <div class="modal-form__body_message" >@{{ message  }}</div>
                     </div>
 
                     <div class="modal-form__footer">
-                        <button v-show="componenturl" class="modal-form__button" v-on:click="runAction">OK</button>
-                        <button class="modal-form__button" v-on:click="$emit('close')">Close</button>
+                        <button v-show="component_url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>
+                        <button class="modal-form__button btn btn-default" v-on:click="$emit('close')">Close</button>
                     </div>
                 </div>
             </div>
