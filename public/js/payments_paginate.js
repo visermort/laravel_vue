@@ -92,7 +92,7 @@ window.onload = function () {
                     console.log(response);
                     this.gridData = response.data.payments.data;
                     //для селектов очицаем массив и делаем список всех ид
-                    this.checkAll = true;
+                    this.checkAll = false;
                     this.checkedId = []; //массив выбранных checkbox
                     var idList2 = [];
                     var columns2 = this.columns;
