@@ -50,7 +50,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{ action('GoodController@startTree2') }}">Demo Tree</a></li>
                         <li><a href="{{ action('PaymentController@index') }}">Demo Grid</a></li>
-                        <li><a href="{{ action('PaymentController@indexPaginate') }}">Demo Grid (ajax paginate)</a></li>
+                        <li><a href="{{ action('PaymentController@indexPaginate') }}">Demo Grid (ajax)</a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -86,13 +86,15 @@
         </nav>
 
         @yield('content')
+
     </div>
-        @section('scripts')
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>
-            {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js"></script>--}}
-            {{--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--}}
-            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.js"></script>
-            {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.min.js"></script>--}}
-        @show
+    @section('scripts')
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>
+        {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js"></script>--}}
+        {{--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--}}
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.js"></script>
+        {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.min.js"></script>--}}
+
+    @show
 </body>
 </html>

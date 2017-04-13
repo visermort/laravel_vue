@@ -8,6 +8,7 @@ window.onload = function () {
         props: {
             columns: Array,
             actions: Array,
+            actions_common: Array,
             request_url: ''
         },
         data: function () {
@@ -22,7 +23,10 @@ window.onload = function () {
                 sortOrders: sortOrders,
                 dataPage: 1,
                 searchQuery: '',
-                loading: false
+                loading: false,
+                checkAll: false,//выбраны все checkbox
+                checkedId: [], //массив выбранных checkbox
+                idList: []     //список id - для наполнения предыдущего массива
             }
         },
         computed: {
@@ -57,6 +61,17 @@ window.onload = function () {
                     }
                 }
             },
+            runCommonAction: function(action, message){
+                console.log(action, message, this.checkedId);
+                if (action && this.checkedId.length > 0) {
+                    modal.title = 'Please, confirm action!';
+                    modal.message = message;
+                    modal.status = true;
+                    modal.url = action;
+                    modal.id = this.checkedId;
+                    modal.showModal = true;
+                }
+            },
             getRequest: function() {
                 var data = {};
                     page: this.dataPage
@@ -76,7 +91,16 @@ window.onload = function () {
                     this.loading = false;
                     console.log(response);
                     this.gridData = response.data.payments.data;
-                    //console.log(response.data);
+                    //для селектов очицаем массив и делаем список всех ид
+                    this.checkAll = true;
+                    this.checkedId = []; //массив выбранных checkbox
+                    var idList2 = [];
+                    var columns2 = this.columns;
+                    this.gridData.forEach(function(item){
+                        idList2.push(item[columns2[0].key]);
+                    });
+                    this.idList = idList2;
+
                     this.paginateData = {
                         from: response.data.payments.from,
                         to: response.data.payments.to,
@@ -87,15 +111,23 @@ window.onload = function () {
                         next_page_url: response.data.payments.next_page_url,
                         prev_page_url: response.data.payments.prev_page_url
                     };
-                    //console.log(this.gridData, this.paginateData);
                 }).catch(function (error) {
                     this.loading = false;
                     console.log(error);
+                    this.checkAll = false;
+                    this.checkedId = [];
+                    this.idList = [];
                 });
             },
             makeSeach: function (){
                 this.dataPage = 1;
                 this.getRequest();
+            },
+            headerCheckClick: function () {
+                this.checkedId = [];
+                if (this.checkAll) {
+                    this.checkedId = this.idList;
+                }
             }
         },
         mounted: function(){
@@ -118,7 +150,7 @@ window.onload = function () {
                 {'key':'created_at', 'value': 'Дата'}
             ],
             url: '/payments-data-paginate',
-            actions: [
+            actions: [ //кнопки действий для каждой строки
                 {
                     'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
                     'title': 'Edit payment',
@@ -132,6 +164,21 @@ window.onload = function () {
                     'method': 'post',
                     'message': 'Do you really want to delete payment?'
                 }
+            ],
+            actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
+                {
+                    'value': '<i class="fa fa-file-excel-o" aria-hidden="true"></i>',
+                    'title': 'Export selected payment',
+                    'action': '/payments/export',
+                    'message': 'Checked payment will be exported'
+                },
+                {
+                    'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
+                    'title': 'Delete selected payment',
+                    'action': '/payments/common-delete',
+                    'message': 'Do you really want to delete selected payments?'
+                }
+
             ]
         }
     });

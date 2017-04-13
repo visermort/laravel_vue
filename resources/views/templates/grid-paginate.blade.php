@@ -2,15 +2,28 @@
 <!-- grid template -->
 <script type="text/x-template" id="grid-template-ajax">
     <div class="grid-data">
-        <div class="demo-grid__search_form col-sm-6" >
-            <div class="col-sm-2">
-                <label for="form-search-input-query">Search</label>
+        {{--tool bar - shown if there is actions_common--}}
+        <div class="grid-data__header clearfix">
+            <div class="grid-data__search_form col-sm-6" >
+                <div class="col-sm-2">
+                    <label for="form-search-input-query">Search</label>
+                </div>
+                <div class="col-sm-8">
+                    <input id="form-search-input-query" class="grid-data__search_input form-control" name="query" v-model="searchQuery" >
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-default grid-data__search_button" v-on:click.prevent="makeSeach()" href="#" >Search</button>
+                </div>
             </div>
-            <div class="col-sm-8">
-                <input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery" >
-            </div>
-            <div class="col-sm-2">
-                <button class="btn btn-default demo-grid__search_button" v-on:click.prevent="makeSeach()" href="#" >Search</button>
+            <div class="grid-data__tools col-sm-6">
+                <ul class="grid-data__tools_list "  v-if="actions_common.length">
+                    <li class="grid-data__tools_item"
+                        v-for="action in actions_common"
+                        v-bind:title="action.title"
+                        v-on:click.prevent="runCommonAction(action.action, action.message)"
+                        v-html="action.value" >
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="grid-data__preloader" v-if="loading" id="fountainG">
@@ -26,9 +39,11 @@
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
             <tr>
+                <th v-if="actions_common.length">
+                    <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
+                </th>
                 <th v-for="key in columns"
-                    v-on:click="sortBy(key.key)" :class="{ active: sortKey == key.key }"
-                >
+                    v-on:click="sortBy(key.key)" :class="{ active: sortKey == key.key }">
                     @{{ key.value | capitalize }}
                     <span class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
                 </th>
@@ -37,6 +52,10 @@
             </thead>
             <tbody class="grid-data__table_body">
                 <tr v-for="entry in gridData">
+                    <th v-if="actions_common.length">
+                        <input v-bind:id="entry[columns[0].key]+'_checkbox_table_row'" type="checkbox" v-model="checkedId" v-bind:value="entry[columns[0].key]">
+                        <label v-bind:for="entry[columns[0].key]+'_checkbox_table_row'"></label>
+                    </th>
                     <td v-for="key in columns">
                         @{{entry[key.key]}}
                     </td>

@@ -1,6 +1,7 @@
 @extends('layouts.appvue')
 
 @section('content')
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -11,8 +12,10 @@
                         <grid-paginate-ajax
                                 :columns="gridColumns"
                                 :actions="actions"
+                                :actions_common="actionsCommon"
                                 :request_url="url">
                         </grid-paginate-ajax>
+
                     </div>
                 </div>
             </div>
@@ -29,7 +32,9 @@
 @section('sciprts')
     @parent
     {{--<script src="js/components/grid.js"></script>--}}
+    {{--<script src="js/components/greed.js"></script>--}}
     <script src="js/payments_paginate.js"></script>
+
 @show
 
 

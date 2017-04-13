@@ -4,4 +4,4 @@
 
 #### Lazy load tree. Grid with paginate, sort, seach. Grid with paginate, sort, search by Ajax.
 
-![Vue logo](/resources/assets/images/ue.png)
+![Vue logo](/resources/assets/images/vue.png)
