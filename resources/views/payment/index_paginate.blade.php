@@ -13,6 +13,7 @@
                                 :columns="gridColumns"
                                 :actions="actions"
                                 :actions_common="actionsCommon"
+                                :actions_common_disable="actionsCommonDisable"
                                 :request_url="url">
                         </grid-paginate-ajax>
 

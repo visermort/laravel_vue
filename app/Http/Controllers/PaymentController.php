@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Payment;
 use Illuminate\Support\Facades\Validator;
+use DB;
 
 class PaymentController extends Controller
 {
@@ -45,7 +46,10 @@ class PaymentController extends Controller
 
     public function getDataPaginate(Request $request)
     {
-        $payments = new Payment;
+        //$payments = new Payment;
+        $payments = Payment::select('payments.*');
+        $payments->addSelect(DB::raw('(`payment_id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
+        $payments->addSelect(DB::raw('(`payment_id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
         if ($request->has('search')) {
             $payments = $payments->where('payment_id', 'like', '%'.$request->get('search').'%');
             $payments = $payments->orWhere('payment_order_id', 'like', $request->get('search').'%');

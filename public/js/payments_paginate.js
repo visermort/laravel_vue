@@ -9,6 +9,7 @@ window.onload = function () {
             columns: Array,
             actions: Array,
             actions_common: Array,
+            actions_common_disable: '',
             request_url: ''
         },
         data: function () {
@@ -91,13 +92,16 @@ window.onload = function () {
                     this.loading = false;
                     console.log(response);
                     this.gridData = response.data.payments.data;
-                    //для селектов очицаем массив и делаем список всех ид
+                    //для селектов очицаем массив и делаем список всех доступных ид
                     this.checkAll = false;
                     this.checkedId = []; //массив выбранных checkbox
                     var idList2 = [];
                     var columns2 = this.columns;
+                    var actions_common_disable2 = this.actions_common_disable;
                     this.gridData.forEach(function(item){
-                        idList2.push(item[columns2[0].key]);
+                        if (actions_common_disable2 == null || !item[actions_common_disable2]) {
+                            idList2.push(item[columns2[0].key]);
+                        }
                     });
                     this.idList = idList2;
 
@@ -141,13 +145,13 @@ window.onload = function () {
         data: {
             searchQuery: '',
             gridColumns: [
-                {'key':'payment_id', 'value': 'Id'},
-                {'key':'payment_order_id', 'value': 'Order Id'},
-                {'key':'payment_summ', 'value': 'Сумма'},
-                {'key':'payment_client_name', 'value': 'Клиент'},
-                {'key':'payment_client_phone', 'value': 'Телефон'},
-                {'key':'payment_status', 'value': 'Статус'},
-                {'key':'created_at', 'value': 'Дата'}
+                {'key': 'payment_id', 'value': 'Id'},
+                {'key': 'payment_order_id', 'value': 'Order Id'},
+                {'key': 'payment_summ', 'value': 'Сумма'},
+                {'key': 'payment_client_name', 'value': 'Клиент'},
+                {'key': 'payment_client_phone', 'value': 'Телефон'},
+                {'key': 'payment_status', 'value': 'Статус'},
+                {'key': 'created_at', 'value': 'Дата'}
             ],
             url: '/payments-data-paginate',
             actions: [ //кнопки действий для каждой строки
@@ -156,13 +160,15 @@ window.onload = function () {
                     'title': 'Edit payment',
                     'action': '/payments/edit/',
                     'method': 'get'
+                   // 'disable': ''//кнопка актива если условие  не задаём
                 },
                 {
                     'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
                     'title': 'Delete payment',
                     'action': '/payments/delete',
                     'method': 'post',
-                    'message': 'Do you really want to delete payment?'
+                    'message': 'Do you really want to delete payment?',
+                    'disable' : 'disable_delete'//кнопка не активана условие из поля данных, сформировано в бек
                 }
             ],
             actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
@@ -179,7 +185,8 @@ window.onload = function () {
                     'message': 'Do you really want to delete selected payments?'
                 }
 
-            ]
+            ],
+            actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных 
         }
     });
 

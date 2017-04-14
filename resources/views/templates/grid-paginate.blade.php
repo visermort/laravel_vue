@@ -53,21 +53,38 @@
             <tbody class="grid-data__table_body">
                 <tr v-for="entry in gridData">
                     <th v-if="actions_common.length">
-                        <input v-bind:id="entry[columns[0].key]+'_checkbox_table_row'" type="checkbox" v-model="checkedId" v-bind:value="entry[columns[0].key]">
+                        <input v-if="(actions_common_disable != '' && entry[actions_common_disable])"
+                               v-bind:id="entry[columns[0].key]+'_checkbox_table_row'"
+                               type="checkbox" class="disabled" >
+                        <input v-else
+                               v-bind:id="entry[columns[0].key]+'_checkbox_table_row'"
+                               type="checkbox" v-model="checkedId"
+                               v-bind:value="entry[columns[0].key]">
                         <label v-bind:for="entry[columns[0].key]+'_checkbox_table_row'"></label>
                     </th>
                     <td v-for="key in columns">
                         @{{entry[key.key]}}
                     </td>
                     <td v-if="actions.length">
-                        <a class="grid-data__table_link" v-for="action in actions"
-                           href=""
-                           v-bind:title="action.title"
-                           {{--третьим аргументом функции передали id таким образом - это первая колонка :columns = gridColumns--}}
-                           v-on:click.prevent="runAction(action.action, action.method, entry[columns[0].key], action.message)"
-                           v-html="action.value"
-                        >
-                        </a>
+                        <ul class="grid-data__table_actions_list" >
+                            <li class="grid-data__table_actions_item" v-for="action in actions"  >
+                                <span v-if="(action.disable != null && entry[action.disable])" class="grid-data__table_actions_label"
+                                      v-bind:title="action.title"
+                                      v-html="action.value"
+                                >
+                                </span>
+                                <a  v-else class="grid-data__table_actions_link"
+                                   v-bind:class="{disable: (action.disable == null || entry[action.disable])}"
+                                   href=""
+                                   v-bind:title="action.title"
+                                   {{--третьим аргументом функции передали id таким образом - это первая колонка :columns = gridColumns--}}
+                                   v-on:click.prevent="runAction(action.action, action.method, entry[columns[0].key], action.message)"
+                                   v-html="action.value"
+                                >
+                                </a>
+                            </li>
+                        </ul>
+
 
                     </td>
                 </tr>
