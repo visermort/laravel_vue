@@ -97,15 +97,22 @@
                 Page @{{ paginateData.current_page }} from @{{ paginateData.last_page }}.
             </div>
         </div>
+        {{--<div class="grid-data__paginate">--}}
+            {{--<ul class="grid-data__paginate_list">--}}
+                {{--<li class="grid-data__paginate_item" v-for="page in paginateData.last_page">--}}
+                    {{--<span v-if="page == dataPage" >@{{ page }}</span>--}}
+                    {{--<a v-else v-on:click.prevent="setPage(page)" href="#" >@{{ page }}</a>--}}
+                {{--</li>--}}
+            {{--</ul>--}}
+        {{--</div>--}}
         <div class="grid-data__paginate">
             <ul class="grid-data__paginate_list">
-                <li class="grid-data__paginate_item" v-for="page in paginateData.last_page">
-                    <span v-if="page == dataPage" >@{{ page }}</span>
-                    <a v-else v-on:click.prevent="setPage(page)" href="#" >@{{ page }}</a>
+                <li class="grid-data__paginate_item" v-for="page in paginateButtons">
+                    <span class="grid-data__paginate_span" v-if="page.page == dataPage" >@{{ page.title }}</span>
+                    <a class="grid-data__paginate_link" v-else v-on:click.prevent="setPage(page.page)" href="#" >@{{ page.title }}</a>
                 </li>
             </ul>
         </div>
-
 
 
     </div>

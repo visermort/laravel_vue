@@ -10,7 +10,7 @@ window.onload = function () {
         },
         data: function () {
             var sortOrders = {};
-            console.log(this.config);
+            //console.log(this.config);
             this.config.gridColumns.forEach(function (key) {
                 sortOrders[key.key] = 1
             });
@@ -28,7 +28,34 @@ window.onload = function () {
             }
         },
         computed: {
-            },
+            paginateButtons: function(){
+                var result = [],
+                    pageOffset = 2;
+                if (!this.paginateData || !this.paginateData.last_page || this.paginateData.last_page == 0) {
+                    return result;
+                } else {
+                    var from = this.dataPage-pageOffset > 0 ? this.dataPage-pageOffset : 1,
+                        to = this.dataPage+pageOffset <= this.paginateData.last_page ?
+                            this.dataPage+pageOffset : this.paginateData.last_page;
+                    if (this.dataPage > pageOffset + 1) {
+                        result.push({title: '<<', page: 1});
+                    }
+                    if (this.dataPage > 1) {
+                        result.push({title: '<', page: this.dataPage-1});
+                    }
+                    for (var i = from; i <= to; i++){
+                        result.push({title: i, page: i});
+                    }
+                    if (this.dataPage < this.paginateData.last_page) {
+                        result.push({title: '>', page: this.dataPage+1});
+                    }
+                    if (this.dataPage < this.paginateData.last_page - pageOffset) {
+                        result.push({title: '>>', page: this.paginateData.last_page});
+                    }
+                }
+                return result;
+            }
+        },
         filters: {
             capitalize: function (str) {
                 return str.charAt(0).toUpperCase() + str.slice(1)
@@ -197,7 +224,7 @@ window.onload = function () {
                 //от реквест корректировать грид
                 this.extConfig = JSON.parse(document.querySelector('#grid-data-form-config').getAttribute('value'));
                 for (item in this.extConfig){
-                   console.log(item);
+                  // console.log(item);
                     if (this.config[item]) {
                         this.config[item] = this.extConfig[item];
                     }

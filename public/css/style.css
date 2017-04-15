@@ -113,6 +113,37 @@
     display: inline-block;
     margin-right: 10px;
 }
+.grid-data__paginate_link,
+.grid-data__paginate_span {
+    display: block;
+    width: 22px;
+    height: 22px;
+    /*padding: 4px;*/
+    line-height: 0.7;
+    border-radius: 3px;
+    border: 1px solid #ccd0d2;
+    text-align: center;
+    padding-top: 5px;
+    color: #444;
+    text-decoration: none;
+}
+.grid-data__paginate_link:hover {
+    border-color: #42b983;
+    color: #444;
+    background-color: #d3e0e9;
+}
+.grid-data__paginate_link:active,
+.grid-data__paginate_link:visited,
+.grid-data__paginate_link:checked,
+.grid-data__paginate_link:focus,
+.grid-data__paginate_link:hover {
+    text-decoration: none;
+    color: #444;
+}
+.grid-data__paginate_span {
+  color: lightgrey;
+}
+
 
 .grid-data__header {
     margin-bottom: 10px;
