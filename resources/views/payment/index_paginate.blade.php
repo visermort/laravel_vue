@@ -7,14 +7,34 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading">Billings</div>
+                    <div class="">
+                        <ul>
+                            <li class="page-link">
+                                <a href="{{ action('PaymentController@indexPaginate') }}">Config in Vue instance</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=1">Change config in backend 1</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=2">Change config in backend 2</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=3">Change config in backend 3</a>
+                            </li>
+                        </ul>
+                    </div>
 
                     <div class="demo-grid" id="demoGrid">
+
                         <grid-paginate-ajax
                                 :columns="gridColumns"
                                 :actions="actions"
                                 :actions_common="actionsCommon"
                                 :actions_common_disable="actionsCommonDisable"
-                                :request_url="url">
+                                :request_url="url"
+
+                                >
+
                         </grid-paginate-ajax>
 
                     </div>

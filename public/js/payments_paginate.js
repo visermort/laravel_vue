@@ -144,6 +144,7 @@ window.onload = function () {
         el: '#demoGrid',
         data: {
             searchQuery: '',
+            extConfig: '',
             gridColumns: [
                 {'key': 'payment_id', 'value': 'Id'},
                 {'key': 'payment_order_id', 'value': 'Order Id'},
@@ -186,8 +187,27 @@ window.onload = function () {
                 }
 
             ],
-            actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных 
+            actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных
+
+        },
+        methods: {
+            config: function(){
+                //внешняя конфигурация - получается из бека и корректирует поля в instance
+                //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
+                //от реквест корректировать грид
+                this.extConfig = JSON.parse(document.querySelector('#grid-data-form-config').getAttribute('value'));
+                for (item in this.extConfig){
+                   console.log(item);
+                    if (this[item]) {
+                        this[item] = this.extConfig[item];
+                    }
+                }
+            }
+        },
+        mounted: function(){
+            this.config();//корректировка конфигурации
         }
+
     });
 
 

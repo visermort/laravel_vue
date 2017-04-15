@@ -39,9 +39,40 @@ class PaymentController extends Controller
         }
     }
 
-    public function indexPaginate()
+    public function indexPaginate(Request $request)
     {
-        return view('payment.index_paginate');
+        $config = [];
+        if ($request->has('config')) {
+            switch ($request->config) {
+                case ('1'):
+                    $config = [
+                        'actions' => [],
+                    ];
+                    break;
+                case ('2'):
+                    $config = [
+                        'actionsCommon' => [],
+                    ];
+                    break;
+                case ('3'):
+                    $config = [
+                        'actions' => [
+                            [
+                            'value' => '<i class="fa fa-trash" aria-hidden="true"></i>',
+                            'title'=> 'Delete payment',
+                            'action'=> '/payments/delete',
+                            'method'=> 'post',
+                            'message'=> 'Do you really want to delete payment?',
+                            'disable' => 'check_box_disable'//условие здесь другое
+                            ],
+                        ],
+                    ];
+                    break;
+            }
+        }
+        return view('payment.index_paginate', [
+            'config' => json_encode($config),
+        ]);
     }
 
     public function getDataPaginate(Request $request)
@@ -66,7 +97,7 @@ class PaymentController extends Controller
             'sql' => $payments->toSql(),
             'payments' => $payments->paginate(config('vue.paginate')),
             'request' => $request->all(),
-            
+
         ]);
     }
 
