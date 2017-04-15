@@ -6,15 +6,12 @@ window.onload = function () {
     Vue.component('grid-paginate-ajax', {
         template: '#grid-template-ajax',
         props: {
-            columns: Array,
-            actions: Array,
-            actions_common: Array,
-            actions_common_disable: '',
-            request_url: ''
+            config: {}
         },
         data: function () {
             var sortOrders = {};
-            this.columns.forEach(function (key) {
+            console.log(this.config);
+            this.config.gridColumns.forEach(function (key) {
                 sortOrders[key.key] = 1
             });
             return {
@@ -88,7 +85,7 @@ window.onload = function () {
                 }
 
                 this.loading = true;
-                this.$http.get(this.request_url, {params: data}).then(function(response){
+                this.$http.get(this.config.requestUrl, {params: data}).then(function(response){
                     this.loading = false;
                     console.log(response);
                     this.gridData = response.data.payments.data;
@@ -96,8 +93,8 @@ window.onload = function () {
                     this.checkAll = false;
                     this.checkedId = []; //массив выбранных checkbox
                     var idList2 = [];
-                    var columns2 = this.columns;
-                    var actions_common_disable2 = this.actions_common_disable;
+                    var columns2 = this.config.gridColumns;
+                    var actions_common_disable2 = this.config.actions_common_disable;
                     this.gridData.forEach(function(item){
                         if (actions_common_disable2 == null || !item[actions_common_disable2]) {
                             idList2.push(item[columns2[0].key]);
@@ -145,67 +142,70 @@ window.onload = function () {
         data: {
             searchQuery: '',
             extConfig: '',
-            gridColumns: [
-                {'key': 'payment_id', 'value': 'Id'},
-                {'key': 'payment_order_id', 'value': 'Order Id'},
-                {'key': 'payment_summ', 'value': 'Сумма'},
-                {'key': 'payment_client_name', 'value': 'Клиент'},
-                {'key': 'payment_client_phone', 'value': 'Телефон'},
-                {'key': 'payment_status', 'value': 'Статус'},
-                {'key': 'created_at', 'value': 'Дата'}
-            ],
-            url: '/payments-data-paginate',
-            actions: [ //кнопки действий для каждой строки
-                {
-                    'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
-                    'title': 'Edit payment',
-                    'action': '/payments/edit/',
-                    'method': 'get'
-                   // 'disable': ''//кнопка актива если условие  не задаём
-                },
-                {
-                    'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
-                    'title': 'Delete payment',
-                    'action': '/payments/delete',
-                    'method': 'post',
-                    'message': 'Do you really want to delete payment?',
-                    'disable' : 'disable_delete'//кнопка не активана условие из поля данных, сформировано в бек
-                }
-            ],
-            actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
-                {
-                    'value': '<i class="fa fa-file-excel-o" aria-hidden="true"></i>',
-                    'title': 'Export selected payment',
-                    'action': '/payments/export',
-                    'message': 'Checked payment will be exported'
-                },
-                {
-                    'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
-                    'title': 'Delete selected payment',
-                    'action': '/payments/common-delete',
-                    'message': 'Do you really want to delete selected payments?'
-                }
+            config: {
+                gridColumns: [
+                    {'key': 'payment_id', 'value': 'Id'},
+                    {'key': 'payment_order_id', 'value': 'Order Id'},
+                    {'key': 'payment_summ', 'value': 'Сумма'},
+                    {'key': 'payment_client_name', 'value': 'Клиент'},
+                    {'key': 'payment_client_phone', 'value': 'Телефон'},
+                    {'key': 'payment_status', 'value': 'Статус'},
+                    {'key': 'created_at', 'value': 'Дата'}
+                ],
+                requestUrl: '/payments-data-paginate',
+                actions: [ //кнопки действий для каждой строки
+                    {
+                        'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
+                        'title': 'Edit payment',
+                        'action': '/payments/edit/',
+                        'method': 'get'
+                        // 'disable': ''//кнопка актива если условие  не задаём
+                    },
+                    {
+                        'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
+                        'title': 'Delete payment',
+                        'action': '/payments/delete',
+                        'method': 'post',
+                        'message': 'Do you really want to delete payment?',
+                        'disable': 'disable_delete'//кнопка не активана условие из поля данных, сформировано в бек
+                    }
+                ],
+                actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
+                    {
+                        'value': '<i class="fa fa-file-excel-o" aria-hidden="true"></i>',
+                        'title': 'Export selected payment',
+                        'action': '/payments/export',
+                        'message': 'Checked payment will be exported'
+                    },
+                    {
+                        'value': '<i class="fa fa-trash" aria-hidden="true"></i>',
+                        'title': 'Delete selected payment',
+                        'action': '/payments/common-delete',
+                        'message': 'Do you really want to delete selected payments?'
+                    }
 
-            ],
-            actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных
+                ],
+                actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных                  
+            }
+
 
         },
         methods: {
-            config: function(){
+            correctConfig: function(){
                 //внешняя конфигурация - получается из бека и корректирует поля в instance
                 //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
                 //от реквест корректировать грид
                 this.extConfig = JSON.parse(document.querySelector('#grid-data-form-config').getAttribute('value'));
                 for (item in this.extConfig){
                    console.log(item);
-                    if (this[item]) {
-                        this[item] = this.extConfig[item];
+                    if (this.config[item]) {
+                        this.config[item] = this.extConfig[item];
                     }
                 }
             }
         },
         mounted: function(){
-            this.config();//корректировка конфигурации
+            this.correctConfig();//корректировка конфигурации
         }
 
     });

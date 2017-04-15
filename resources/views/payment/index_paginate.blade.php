@@ -26,16 +26,7 @@
 
                     <div class="demo-grid" id="demoGrid">
 
-                        <grid-paginate-ajax
-                                :columns="gridColumns"
-                                :actions="actions"
-                                :actions_common="actionsCommon"
-                                :actions_common_disable="actionsCommonDisable"
-                                :request_url="url"
-
-                                >
-
-                        </grid-paginate-ajax>
+                        <grid-paginate-ajax :config="config" ></grid-paginate-ajax>
 
                     </div>
                 </div>

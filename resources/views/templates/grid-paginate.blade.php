@@ -17,9 +17,9 @@
                 </div>
             </div>
             <div class="grid-data__tools col-sm-6">
-                <ul class="grid-data__tools_list "  v-if="actions_common.length">
+                <ul class="grid-data__tools_list "  v-if="config.actionsCommon.length">
                     <li class="grid-data__tools_item"
-                        v-for="action in actions_common"
+                        v-for="action in config.actionsCommon"
                         v-bind:title="action.title"
                         v-on:click.prevent="runCommonAction(action.action, action.message)"
                         v-html="action.value" >
@@ -40,35 +40,35 @@
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
             <tr>
-                <th v-if="actions_common.length">
+                <th v-if="config.actionsCommon.length">
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
-                <th v-for="key in columns"
+                <th v-for="key in config.gridColumns"
                     v-on:click="sortBy(key.key)" :class="{ active: sortKey == key.key }">
                     @{{ key.value | capitalize }}
                     <span class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
                 </th>
-                <th v-if="actions.length">Actions</th>
+                <th v-if="config.actions.length">Actions</th>
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
                 <tr v-for="entry in gridData">
-                    <th v-if="actions_common.length">
-                        <input v-if="(actions_common_disable != '' && entry[actions_common_disable])"
-                               v-bind:id="entry[columns[0].key]+'_checkbox_table_row'"
+                    <th v-if="config.actionsCommon.length">
+                        <input v-if="(config.actionsCommon_disable != '' && entry[config.actionsCommonDisable])"
+                               v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
                                type="checkbox" class="disabled" >
                         <input v-else
-                               v-bind:id="entry[columns[0].key]+'_checkbox_table_row'"
+                               v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
                                type="checkbox" v-model="checkedId"
-                               v-bind:value="entry[columns[0].key]">
-                        <label v-bind:for="entry[columns[0].key]+'_checkbox_table_row'"></label>
+                               v-bind:value="entry[config.gridColumns[0].key]">
+                        <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
                     </th>
-                    <td v-for="key in columns">
+                    <td v-for="key in config.gridColumns">
                         @{{entry[key.key]}}
                     </td>
-                    <td v-if="actions.length">
+                    <td v-if="config.actions.length">
                         <ul class="grid-data__table_actions_list" >
-                            <li class="grid-data__table_actions_item" v-for="action in actions"  >
+                            <li class="grid-data__table_actions_item" v-for="action in config.actions"  >
                                 <span v-if="(action.disable != null && entry[action.disable])" class="grid-data__table_actions_label"
                                       v-bind:title="action.title"
                                       v-html="action.value"
@@ -78,8 +78,8 @@
                                    v-bind:class="{disable: (action.disable == null || entry[action.disable])}"
                                    href=""
                                    v-bind:title="action.title"
-                                   {{--третьим аргументом функции передали id таким образом - это первая колонка :columns = gridColumns--}}
-                                   v-on:click.prevent="runAction(action.action, action.method, entry[columns[0].key], action.message)"
+                                   {{--третьим аргументом функции передали id таким образом - это первая колонка gridColumns--}}
+                                   v-on:click.prevent="runAction(action.action, action.method, entry[config.gridColumns[0].key], action.message)"
                                    v-html="action.value"
                                 >
                                 </a>
