@@ -287,13 +287,11 @@ input[type="checkbox"].disabled:checked +label{
 
 
 #fountainG{
-    /*position:relative;*/
+    position:relative;
     width:132px;
-    height:16px;
-    /*margin:auto;*/
-    position: fixed;
-    top: 30%;
-    left: 45%;
+    /*height:16px;*/
+    top: 100px;
+    margin: 0 auto;
 }
 
 .fountainG{
