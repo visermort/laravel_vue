@@ -92,16 +92,8 @@
             </tbody>
         </table>
 
-        {{--<div class="grid-data__paginate">--}}
-            {{--<ul class="grid-data__paginate_list">--}}
-                {{--<li class="grid-data__paginate_item" v-for="page in paginateData.last_page">--}}
-                    {{--<span v-if="page == dataPage" >@{{ page }}</span>--}}
-                    {{--<a v-else v-on:click.prevent="setPage(page)" href="#" >@{{ page }}</a>--}}
-                {{--</li>--}}
-            {{--</ul>--}}
-        {{--</div>--}}
         <div class="row">
-            <div class="grid-data__paginate col-sm-4">
+            <div class="grid-data__paginate col-sm-5">
                 <ul class="grid-data__paginate_list">
                     <li class="grid-data__paginate_item" v-for="page in paginateButtons">
                         <span class="grid-data__paginate_span" v-if="page.page == dataPage" >@{{ page.title }}</span>
@@ -109,7 +101,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="grid-data__info col-sm-5">
+            <div class="grid-data__info col-sm-4">
                 <div class="grid-data__info_text">
                     Elements from @{{ paginateData.from }} to @{{ paginateData.to }}. All @{{ paginateData.total }}.
                     Page @{{ paginateData.current_page }} from @{{ paginateData.last_page }}.
@@ -120,7 +112,7 @@
                     <label for="grid-data-per-page">On page</label>
                 </div>
                 <div class="col-sm-6">
-                    <select class="grid-data__per_page_select form-control" name="per_page" id="grid-data-per-page" v-model="perPage">
+                    <select class="grid-data__per_page_select form-control" name="per_page" id="grid-data-per-page" v-model="localPerPage" >
                         <option class="grid-data__per_page_option "
                                  v-for="option in config.perPages"
                                  v-bind:value="option.count" >

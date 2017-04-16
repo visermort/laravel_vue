@@ -107,7 +107,9 @@
     border-top: 4px solid #fff;
 }
 
-
+.grid-data__paginate_list {
+    padding-left: 15px;
+}
 .grid-data__paginate_item {
     list-style-type: none;
     display: inline-block;

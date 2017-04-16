@@ -26,7 +26,7 @@
 
                     <div class="demo-grid" id="demoGrid">
 
-                        <grid-paginate-ajax :config="config" ></grid-paginate-ajax>
+                        <grid-paginate-ajax :config="config"></grid-paginate-ajax>
 
                     </div>
                 </div>

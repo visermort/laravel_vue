@@ -2,6 +2,9 @@ window.onload = function () {
 
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
+    //instance for events
+    var Events = new Vue({});
+
 // register the grid component
     Vue.component('grid-paginate-ajax', {
         template: '#grid-template-ajax',
@@ -25,7 +28,7 @@ window.onload = function () {
                 checkAll: false,//выбраны все checkbox
                 checkedId: [], //массив выбранных checkbox
                 idList: [],     //список id - для наполнения предыдущего массива
-                perPage: 15
+                localPerPage: 0
             }
         },
         computed: {
@@ -110,8 +113,9 @@ window.onload = function () {
                 if (this.searchQuery) {
                     data.search = this.searchQuery;
                 }
-                if (this.perPage > 0 ){
-                    data.per_page = this.perPage;
+                if (this. localPerPage > 0 ){
+                    data.per_page = this. localPerPage;
+                    console.log('perpage '+data.per_page);
                 }
 
                 this.loading = true;
@@ -159,13 +163,25 @@ window.onload = function () {
                 if (this.checkAll) {
                     this.checkedId = this.idList;
                 }
+            },
+            setLocalPerPage: function(){
+                this.localPerPage = this.config.perPage;
             }
         },
         mounted: function(){
-            this.getRequest();
+            var func = this.setLocalPerPage;
+            //ловим событие специального компонента
+            Events.$on('loadconfig', function(){
+                console.log('После старта делаем запрос');
+                func();//переписать perPage из конфиг
+              //в этом месте нужно делать запрос, но поскольку он запускается при изменении localPerPage, запускать специально не нужно
+            });
+
+
         },
         watch: {
-            perPage: function(){
+            localPerPage: function(){
+                console.log(this.localPerPage);
                 this.dataPage = 1;
                 this.getRequest();
             }
@@ -227,10 +243,9 @@ window.onload = function () {
                     {title:'25', count: 25},
                     {title:'50', count: 50},
                     {title:'100', count: 100}
-                ]
+                ],
+                perPage: 15
             }
-
-
         },
         methods: {
             correctConfig: function(){
@@ -247,7 +262,10 @@ window.onload = function () {
             }
         },
         mounted: function(){
-            this.correctConfig();//корректировка конфигурации
+            console.log('mounted');
+            this.correctConfig();//после загрузки страницы корректировка конфигурации
+                    //после чего вызываем событие через специально сделанный ради этого экземпляр
+            Events.$emit('loadconfig');
         }
 
     });

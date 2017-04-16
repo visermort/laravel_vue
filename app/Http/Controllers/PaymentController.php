@@ -42,6 +42,12 @@ class PaymentController extends Controller
     public function indexPaginate(Request $request)
     {
         $config = [];
+        //из сессии - сохранённое значение элементов на страницу
+        if ($request->session()->has('grid-paginate-per-page') &&
+            (int) $request->session()->get('grid-paginate-per-page') > 0) {
+            $config['perPage'] = $request->session()->get('grid-paginate-per-page');
+        }
+        //в зависимости от параметров  - разная конфигурация
         if ($request->has('config')) {
             switch ($request->config) {
                 case ('1'):
@@ -72,6 +78,7 @@ class PaymentController extends Controller
         }
         return view('payment.index_paginate', [
             'config' => json_encode($config),
+
         ]);
     }
 
@@ -80,6 +87,7 @@ class PaymentController extends Controller
         //$payments = new Payment;
         $perPage = ($request->has('per_page') && (int) $request->per_page > 0  ?
             (int) $request->per_page : config('vue.paginate'));
+        $request->session()->put('grid-paginate-per-page', $perPage);
         $payments = Payment::select('payments.*');
         $payments->addSelect(DB::raw('(`payment_id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
         $payments->addSelect(DB::raw('(`payment_id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
