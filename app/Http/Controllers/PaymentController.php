@@ -51,18 +51,13 @@ class PaymentController extends Controller
         if ($request->has('config')) {
             switch ($request->config) {
                 case ('1'):
-                    $config = [
-                        'actions' => [],
-                    ];
+                    $config['actions'] = [];
                     break;
                 case ('2'):
-                    $config = [
-                        'actionsCommon' => [],
-                    ];
+                    $config['actionsCommon'] = [];
                     break;
                 case ('3'):
-                    $config = [
-                        'actions' => [
+                    $config['actions'] = [
                             [
                             'value' => '<i class="fa fa-trash" aria-hidden="true"></i>',
                             'title'=> 'Delete payment',
@@ -71,8 +66,7 @@ class PaymentController extends Controller
                             'message'=> 'Do you really want to delete payment?',
                             'disable' => 'check_box_disable'//условие здесь другое
                             ],
-                        ],
-                    ];
+                        ];
                     break;
             }
         }
