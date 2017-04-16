@@ -24,7 +24,8 @@ window.onload = function () {
                 loading: false,
                 checkAll: false,//выбраны все checkbox
                 checkedId: [], //массив выбранных checkbox
-                idList: []     //список id - для наполнения предыдущего массива
+                idList: [],     //список id - для наполнения предыдущего массива
+                perPage: 15
             }
         },
         computed: {
@@ -99,7 +100,6 @@ window.onload = function () {
             },
             getRequest: function() {
                 var data = {};
-                    page: this.dataPage
                 if (this.dataPage > 0) {
                     data.page = this.dataPage;
                 }
@@ -109,6 +109,9 @@ window.onload = function () {
                 }
                 if (this.searchQuery) {
                     data.search = this.searchQuery;
+                }
+                if (this.perPage > 0 ){
+                    data.per_page = this.perPage;
                 }
 
                 this.loading = true;
@@ -160,6 +163,12 @@ window.onload = function () {
         },
         mounted: function(){
             this.getRequest();
+        },
+        watch: {
+            perPage: function(){
+                this.dataPage = 1;
+                this.getRequest();
+            }
         }
     });
 
@@ -212,7 +221,13 @@ window.onload = function () {
                     }
 
                 ],
-                actionsCommonDisable: 'check_box_disable' //действия недоступны для строк - условие из поля данных                  
+                actionsCommonDisable: 'check_box_disable', //действия недоступны для строк - условие из поля данных
+                perPages: [
+                    {title:'15', count: 15},
+                    {title:'25', count: 25},
+                    {title:'50', count: 50},
+                    {title:'100', count: 100}
+                ]
             }
 
 

@@ -78,6 +78,8 @@ class PaymentController extends Controller
     public function getDataPaginate(Request $request)
     {
         //$payments = new Payment;
+        $perPage = ($request->has('per_page') && (int) $request->per_page > 0  ?
+            (int) $request->per_page : config('vue.paginate'));
         $payments = Payment::select('payments.*');
         $payments->addSelect(DB::raw('(`payment_id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
         $payments->addSelect(DB::raw('(`payment_id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
@@ -95,7 +97,7 @@ class PaymentController extends Controller
         }
         return json_encode([
             'sql' => $payments->toSql(),
-            'payments' => $payments->paginate(config('vue.paginate')),
+            'payments' => $payments->paginate($perPage),
             'request' => $request->all(),
 
         ]);

@@ -91,12 +91,7 @@
                 </tr>
             </tbody>
         </table>
-        <div class="grid-data__info">
-            <div class="grid-data__info_text">
-                Elements from @{{ paginateData.from }} to @{{ paginateData.to }}. All @{{ paginateData.total }}.
-                Page @{{ paginateData.current_page }} from @{{ paginateData.last_page }}.
-            </div>
-        </div>
+
         {{--<div class="grid-data__paginate">--}}
             {{--<ul class="grid-data__paginate_list">--}}
                 {{--<li class="grid-data__paginate_item" v-for="page in paginateData.last_page">--}}
@@ -105,13 +100,35 @@
                 {{--</li>--}}
             {{--</ul>--}}
         {{--</div>--}}
-        <div class="grid-data__paginate">
-            <ul class="grid-data__paginate_list">
-                <li class="grid-data__paginate_item" v-for="page in paginateButtons">
-                    <span class="grid-data__paginate_span" v-if="page.page == dataPage" >@{{ page.title }}</span>
-                    <a class="grid-data__paginate_link" v-else v-on:click.prevent="setPage(page.page)" href="#" >@{{ page.title }}</a>
-                </li>
-            </ul>
+        <div class="row">
+            <div class="grid-data__paginate col-sm-4">
+                <ul class="grid-data__paginate_list">
+                    <li class="grid-data__paginate_item" v-for="page in paginateButtons">
+                        <span class="grid-data__paginate_span" v-if="page.page == dataPage" >@{{ page.title }}</span>
+                        <a class="grid-data__paginate_link" v-else v-on:click.prevent="setPage(page.page)" href="#" >@{{ page.title }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="grid-data__info col-sm-5">
+                <div class="grid-data__info_text">
+                    Elements from @{{ paginateData.from }} to @{{ paginateData.to }}. All @{{ paginateData.total }}.
+                    Page @{{ paginateData.current_page }} from @{{ paginateData.last_page }}.
+                </div>
+            </div>
+            <div class="grid-data__per_page form-group col-sm-3">
+                <div class="col-sm-6">
+                    <label for="grid-data-per-page">On page</label>
+                </div>
+                <div class="col-sm-6">
+                    <select class="grid-data__per_page_select form-control" name="per_page" id="grid-data-per-page" v-model="perPage">
+                        <option class="grid-data__per_page_option "
+                                 v-for="option in config.perPages"
+                                 v-bind:value="option.count" >
+                            @{{ option.title }}
+                        </option>
+                    </select>
+                </div>
+            </div>
         </div>
 
 

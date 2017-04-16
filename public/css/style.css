@@ -231,6 +231,12 @@ input[type="checkbox"].disabled:checked +label{
 .grid-data__table_actions_label {
     color: lightgray;
 }
+.grid-data__per_page_select {
+    /*width: 80%;*/
+    /*margin-bottom: 10px;*/
+    height: 30px;
+    padding-top: 4px;
+}
 
 /*modal*/
 .modal-mask {
