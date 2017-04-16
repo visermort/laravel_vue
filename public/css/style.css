@@ -274,6 +274,9 @@ input[type="checkbox"].disabled:checked +label{
 .modal-container.modalerror {
     border-color: #c6445c;
 }
+.modal-container.modalwarning {
+    border-color: #ceb33b;
+}
 .modal-form__header {
     color: #fff;
     text-align: center;
@@ -286,6 +289,11 @@ input[type="checkbox"].disabled:checked +label{
 .modal-container.modalerror .modal-form__header {
     background-color: #c6445c;
 }
+.modal-container.modalwarning .modal-form__header {
+    background-color: #ceb33b;
+}
+
+
 .modal-form__header_text {
     padding: 5px;
     font-size: 18px;

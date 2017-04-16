@@ -142,7 +142,7 @@
     <transition name="modal">
         <div class="modal-mask" v-on:click="$emit('close')" >
             <div class="modal-wrapper"  >
-                <div class="modal-container modal-form" :class="{modalerror: component_status == false}" v-on:click.stop >
+                <div class="modal-container modal-form" v-bind:class="component_status" v-on:click.stop >
 
                     <div class="modal-form__header">
                         <div class="modal-form__header_text" >@{{ title }}</div>

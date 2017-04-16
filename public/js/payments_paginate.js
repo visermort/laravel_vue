@@ -3,6 +3,8 @@ window.onload = function () {
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
     //instance for events
+    //используем для передачи событий между компонентами
+    //а также при инициализации, после загрузки конфигурации - команда из инстанса компоненту сделать запрос
     var Events = new Vue({});
 
 // register the grid component
@@ -77,28 +79,44 @@ window.onload = function () {
             },
             runAction: function(action, method, id, message){
                 if (action) {
-                    console.log(action, method, id, message);
+                    //console.log(action, method, id, message);
                     if (method == 'get') {
+                        //get - просто ссылка + ид
                         window.location = action + id;
                     } else {
-                        modal.title = 'Please, confirm action!';
-                        modal.message = message;
-                        modal.status = true;
-                        modal.url = action;
-                        modal.id = id;
-                        modal.showModal = true;
+                        //пост
+                        //вызываем событие на подтвержение операции
+                        Events.$emit('confirm_action', {
+                            'title': 'Please, confirm action!',
+                            'message': message,
+                            'status': true,
+                            'url': action,
+                            'id': id
+                        });
                     }
                 }
             },
             runCommonAction: function(action, message){
-                console.log(action, message, this.checkedId);
+                //console.log(action, message, this.checkedId);
                 if (action && this.checkedId.length > 0) {
-                    modal.title = 'Please, confirm action!';
-                    modal.message = message;
-                    modal.status = true;
-                    modal.url = action;
-                    modal.id = this.checkedId;
-                    modal.showModal = true;
+                    //вызываем событие на подтвержение операции
+                    Events.$emit('confirm_action', {
+                        'title': 'Please, confirm action!',
+                        'message': message,
+                        'status': '',
+                        'url': action,
+                        'id': this.checkedId
+                    });
+
+                } else if (this.checkedId.length == 0){
+                    //сообщение, что не выбраны строки
+                    Events.$emit('confirm_action', {
+                        'title': 'Warning!',
+                        'message': 'Please, select some rows!',
+                        'status': 'modalwarning',
+                        'url': '',
+                        'id': 0
+                    });
                 }
             },
             getRequest: function() {
@@ -119,6 +137,7 @@ window.onload = function () {
                 }
 
                 this.loading = true;
+                //запрос
                 this.$http.get(this.config.requestUrl, {params: data}).then(function(response){
                     this.loading = false;
                     console.log(response);
@@ -169,19 +188,18 @@ window.onload = function () {
             }
         },
         mounted: function(){
+            //внутри функци  метод не виден, поэтому переменная
             var func = this.setLocalPerPage;
-            //ловим событие специального компонента
+            //ловим событие
             Events.$on('loadconfig', function(){
                 console.log('После старта делаем запрос');
                 func();//переписать perPage из конфиг
               //в этом месте нужно делать запрос, но поскольку он запускается при изменении localPerPage, запускать специально не нужно
             });
-
-
-        },
+       },
         watch: {
             localPerPage: function(){
-                console.log(this.localPerPage);
+                //console.log(this.localPerPage);
                 this.dataPage = 1;
                 this.getRequest();
             }
@@ -276,7 +294,7 @@ window.onload = function () {
         template: '#modal-template',
         props: {
             component_url: '',
-            component_status: true
+            component_status: ''
         },
         methods: {
             close: function() {
@@ -284,33 +302,34 @@ window.onload = function () {
             },
             runAction: function() {
                 modal.showModal = false;
-                console.log(modal.url, modal.id);
-
+                //console.log(modal.url, modal.id);
+                //запрос
                 this.$http.post(modal.url, {
                     id: modal.id
                 }).then(function(response){
                      console.log(response);
                     if (response.data ) {
                         console.log(response.data);
-                        this.postMessage(response.data.status, response.data.message);
+                        this.postMessage(response.data.status ? '' : 'modalerror', response.data.message);
                     } else {
                         console.log(response);
-                        this.postMessage(false, response.statusText);
+                        this.postMessage('modalerror', response.statusText);
                     }
 
                 }).catch(function (error) {
                     console.log(error);
-                    this.postMessage(false, 'Ошибка обращения к серверу');
+                    this.postMessage('modalerror', 'Ошибка обращения к серверу');
                 });
             },
             postMessage: function(status, message) {
-                console.log(status, message);
-                modal.url = '';
-                modal.title = 'Result of action';
-                modal.message = message;
-                modal.status = status;
-                modal.showModal = true;
-                //
+                //вызываем событие - cообщение о выполненной операции
+                Events.$emit('confirm_action', {
+                    'title': 'Result of action!',
+                    'message': message,
+                    'status': status,
+                    'url': '',
+                    'id': 0
+                });
             }
         },
         computed: {
@@ -337,7 +356,27 @@ window.onload = function () {
             message: '',
             url: '',
             id: 0,
-            status: true
+            status: ''
+        },
+        methods: {
+            showModalWindow: function(data) {
+                this.title = data.title;
+                this.message = data.message;
+                this.status = data.status;
+                this.id = data.id;
+                this.url = data.url;
+                this.showModal = true;
+            }
+        },
+        mounted: function() {
+            //реакция на событие - вызов модального окна
+            var func = this.showModalWindow;
+            Events.$on('confirm_action', function(data){
+                console.log(data);
+                //вызывакм метод
+                func(data);
+            });
+
         }
     });
 
