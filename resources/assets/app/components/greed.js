@@ -1,4 +1,4 @@
-
+import bus from './bus';
 
 Vue.component('grid-paginate-ajax', {
     template: '#grid-template-ajax',
