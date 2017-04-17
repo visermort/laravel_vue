@@ -17,7 +17,9 @@ window.onload = function () {
             var sortOrders = {};
             //console.log(this.config);
             this.config.gridColumns.forEach(function (key) {
-                sortOrders[key.key] = 1
+                if (key.sort == null || key.sort) {
+                    sortOrders[key.key] = 1
+                }
             });
             return {
                 gridData: Array,
@@ -215,7 +217,7 @@ window.onload = function () {
             config: {
                 gridColumns: [
                     {'key': 'payment_id', 'value': 'Id'},
-                    {'key': 'payment_order_id', 'value': 'Order Id'},
+                    {'key': 'payment_order_id', 'value': 'Order Id', 'sort': false},
                     {'key': 'payment_summ', 'value': 'Сумма'},
                     {'key': 'payment_client_name', 'value': 'Клиент'},
                     {'key': 'payment_client_phone', 'value': 'Телефон'},

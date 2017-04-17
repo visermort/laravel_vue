@@ -81,6 +81,9 @@
 .grid-data__table_head .active {
     color: #fff;
 }
+.grid-data__table_head .disable {
+    cursor: default;
+}
 
 .grid-data__table_head.active .arrow {
     opacity: 1;

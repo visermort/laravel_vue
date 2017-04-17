@@ -44,9 +44,10 @@
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
                 <th v-for="key in config.gridColumns"
-                    v-on:click="sortBy(key.key)" :class="{ active: sortKey == key.key }">
+                    v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
+                    v-bind:class="{ active: sortKey == key.key, disable: key.sort == false }" >
                     @{{ key.value | capitalize }}
-                    <span class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
+                    <span v-if="key.sort != false" class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
                 </th>
                 <th v-if="config.actions.length">Actions</th>
             </tr>
