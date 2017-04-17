@@ -6,3 +6,8 @@
 Homestead.json
 Homestead.yaml
 .env
+/public/js/*
+/public/css/*
+/public/fonts/*
+/public/mix-manifest.json
+

@@ -45,7 +45,7 @@
     @parent
     {{--<script src="js/components/grid.js"></script>--}}
     {{--<script src="js/components/greed.js"></script>--}}
-    <script src="js/payments_paginate.js"></script>
+    {{--<script src="js/payments_paginate.js"></script>--}}
 
 @show
 

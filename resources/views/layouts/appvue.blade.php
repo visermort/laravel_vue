@@ -11,9 +11,12 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="/css/app.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    {{--<link href="/css/app.css" rel="stylesheet">--}}
+    {{--<link href="/css/style.css" rel="stylesheet">--}}
+    {{--<link href="/css/font-awesome.min.css" rel="stylesheet">--}}
+    <link href="{{ mix('/css/vendor.css') }}" rel="stylesheet">
+    <link href="{{ mix('/css/custom.css') }}" rel="stylesheet">
+
     {{--<script--}}
             {{--src="https://code.jquery.com/jquery-2.2.4.min.js"--}}
             {{--integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="--}}
@@ -61,10 +64,12 @@
 
     </div>
     @section('scripts')
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>
+        <script type="text/javascript" src="{{ mix('js/vendor.js') }}"></script>
+        <script type="text/javascript" src="{{ mix('js/custom.js') }}"></script>
+        {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>--}}
         {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js"></script>--}}
         {{--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--}}
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.js"></script>
+        {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.js"></script>--}}
         {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.2.1/vue-resource.min.js"></script>--}}
 
     @show

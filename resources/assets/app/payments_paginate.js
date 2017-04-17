@@ -1,5 +1,7 @@
 window.onload = function () {
 
+    //Vue.prototype.$http = axios; при переходе на аксиос можно так
+
     Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
     //instance for events
