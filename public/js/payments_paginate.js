@@ -293,19 +293,15 @@ window.onload = function () {
     Vue.component('modal-component', {
         template: '#modal-template',
         props: {
-            component_url: '',
-            component_status: ''
+            params: {}
         },
         methods: {
-            close: function() {
-                this.showModal = false;
-            },
             runAction: function() {
-                modal.showModal = false;
-                //console.log(modal.url, modal.id);
+                this.modalClose();
+                //console.log(this.modalParams.url, this.modalParams.id);
                 //запрос
-                this.$http.post(modal.url, {
-                    id: modal.id
+                this.$http.post(this.modalParams.url, {
+                    id: this.modalParams.id
                 }).then(function(response){
                      console.log(response);
                     if (response.data ) {
@@ -330,14 +326,14 @@ window.onload = function () {
                     'url': '',
                     'id': 0
                 });
+            },
+            modalClose: function() {
+                Events.$emit('modal_close');
             }
         },
         computed: {
-            title: function() {
-                return modal.title;
-            },
-            message: function() {
-                return modal.message;
+            modalParams: function() {
+                return this.params;
             }
         },
         data: function() {
@@ -351,30 +347,39 @@ window.onload = function () {
     var modal = new Vue({
         el: '#modal',
         data: {
-            showModal: false,
-            title: 'Please, confirm action!',
-            message: '',
-            url: '',
-            id: 0,
-            status: ''
+            params: {
+                title: '',
+                message: '',
+                url: '',
+                id: 0,
+                status: ''
+            },
+            showModal: false
         },
         methods: {
             showModalWindow: function(data) {
-                this.title = data.title;
-                this.message = data.message;
-                this.status = data.status;
-                this.id = data.id;
-                this.url = data.url;
+                this.params.title = data.title;
+                this.params.message = data.message;
+                this.params.status = data.status;
+                this.params.id = data.id;
+                this.params.url = data.url;
                 this.showModal = true;
+            },
+            modalClose: function() {
+                this.showModal = false;
             }
         },
         mounted: function() {
             //реакция на событие - вызов модального окна
             var func = this.showModalWindow;
+            var funcClose = this.modalClose;
             Events.$on('confirm_action', function(data){
-                console.log(data);
-                //вызывакм метод
+                //вызываем метод
                 func(data);
+            });
+            //закрытие окна
+            Events.$on('modal_close', function() {
+                funcClose();
             });
 
         }

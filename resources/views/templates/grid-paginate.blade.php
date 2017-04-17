@@ -132,8 +132,7 @@
     <modal-component
             v-if="showModal"
             v-on:close="showModal = false"
-            :component_url="url"
-            :component_status="status">
+            :params="params">
     </modal-component>
 </div>
 
@@ -142,18 +141,18 @@
     <transition name="modal">
         <div class="modal-mask" v-on:click="$emit('close')" >
             <div class="modal-wrapper"  >
-                <div class="modal-container modal-form" v-bind:class="component_status" v-on:click.stop >
+                <div class="modal-container modal-form" v-bind:class="modalParams.status" v-on:click.stop >
 
                     <div class="modal-form__header">
-                        <div class="modal-form__header_text" >@{{ title }}</div>
+                        <div class="modal-form__header_text" >@{{ modalParams.title }}</div>
                     </div>
 
                     <div class="modal-form__body">
-                        <div class="modal-form__body_message" >@{{ message  }}</div>
+                        <div class="modal-form__body_message" >@{{ modalParams.message  }}</div>
                     </div>
 
                     <div class="modal-form__footer">
-                        <button v-show="component_url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>
+                        <button v-show="modalParams.url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>
                         <button class="modal-form__button btn btn-default" v-on:click="$emit('close')">Close</button>
                     </div>
                 </div>
