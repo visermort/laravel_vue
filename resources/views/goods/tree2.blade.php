@@ -13,7 +13,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <div v-if="objectsTemplate === 'good'" class="panel-content">
+                            <div  class="panel-content">
                                 <h4>Good</h4>
                                 <div class="row">
                                     <div class="col-sm-4">
@@ -212,9 +212,10 @@
 
 @endsection
 
-@section('sciprts')
+@section('scripts')
     @parent
-    <script src="js/tree2.js"></script>
-@show
+    {{--<script src="js/tree2.js"></script>--}}
+    <script type="text/javascript" src="{{ mix('js/tree.js') }}"></script>
+@endsection
 
 

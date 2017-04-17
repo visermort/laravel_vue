@@ -1,8 +1,10 @@
 
 
     // require('./components/comm');
-    require('./components/greed');
+    require('./components/grid');
     require('./components/modal');
 
     require('./payments_paginate');
+
+
 

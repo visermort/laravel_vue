@@ -36,10 +36,10 @@
 
 @endsection
 
-@section('sciprts')
+@section('scripts')
     @parent
     {{--<script src="js/components/grid.js"></script>--}}
-    <script src="js/payments.js"></script>
-@show
+    <script type="text/javascript" src="{{ mix('js/start_grid.js') }}"></script>
+@endsection
 
 

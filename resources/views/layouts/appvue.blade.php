@@ -65,7 +65,7 @@
     </div>
     @section('scripts')
         <script type="text/javascript" src="{{ mix('js/vendor.js') }}"></script>
-        <script type="text/javascript" src="{{ mix('js/custom.js') }}"></script>
+        {{--<script type="text/javascript" src="{{ mix('js/custom.js') }}"></script>--}}
         {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.js"></script>--}}
         {{--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.4/vue.min.js"></script>--}}
         {{--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>--}}
