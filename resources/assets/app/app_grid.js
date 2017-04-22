@@ -1,8 +1,8 @@
 
 
     // require('./components/comm');
-    require('./components/grid');
-    require('./components/modal');
+    require('./components/grid.js');
+    require('./components/modal.js');
 
     require('./payments_paginate');
 

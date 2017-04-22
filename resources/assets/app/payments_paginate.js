@@ -73,12 +73,15 @@ import bus from './components/bus';
                 //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
                 //от реквест корректировать грид
                 this.extConfig = JSON.parse(document.querySelector('#grid-data-form-config').getAttribute('value'));
+                //console.log(this.extConfig);
                 for (var item in this.extConfig){
-                  // console.log(item);
-                    if (this.config.item) {
-                        this.config.item = this.extConfig.item;
+                    //console.log(item, this.extConfig[item]);
+                     //console.log(this.config[item]);
+                    if (this.config[item]) {
+                        this.config[item] = this.extConfig[item];
                     }
                 }
+                //console.log(this.config);
             }
         },
         mounted: function(){
