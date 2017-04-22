@@ -1,4 +1,7 @@
 <script>
+
+import bus from './bus';
+
 // register modal component
 Vue.component('modal-component', {
     template: '#modal-template',
