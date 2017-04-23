@@ -1,3 +1,5 @@
+import bus from './bus';
+
 // define the item component
 Vue.component('tree-item', {
     template: '#item-template',
@@ -61,29 +63,34 @@ Vue.component('tree-item', {
         },
         //клик на объект
         getObject: function(url){
-            console.log(url);
+            //console.log(url);
             //если objectTemplate пустой, то запрос на получение данных
             if (this.objectTemplate == '') {
                 this.loading = true;
                 this.$http.get(url).then(function (response) {
                     this.loading = false;
-                    console.log(response.data);
+                    //console.log(response.data);
                     this.objectData = response.data.object;
                     this.objectTemplate = response.data.template;
-                    tree.objectsData = this.objectData;
-                    tree.objectsTemplate = this.objectTemplate;
-                    console.log(tree.objectsData, tree.objectsTemplate)
+                    this.copyData();
 
                 }).catch(function (error) {
                     this.loading = false;
                     console.log(error);
                 });
             } else {
-                tree.objectsData = this.objectData ? this.objectData : {};
-                tree.objectsTemplate = this.objectTemplate;
-                console.log(tree.objectsData, tree.objectsTemplate)
+                this.copyData();
             }
 
+        },
+        copyData: function () {
+            //перенос данных из компонента в инстанс
+            //console.log('instance', this.objectData, this.objectTemplate);
+            bus.$emit('treeItemClick', {
+                data: this.objectData ? this.objectData : {},
+                template: this.objectTemplate
+            });
         }
+        
     }
 });

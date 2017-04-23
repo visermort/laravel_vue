@@ -13,7 +13,7 @@
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <div  class="panel-content">
+                            <div v-if="objectsTemplate === 'good'" class="panel-content">
                                 <h4>Good</h4>
                                 <div class="row">
                                     <div class="col-sm-4">
