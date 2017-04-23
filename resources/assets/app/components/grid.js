@@ -1,5 +1,8 @@
 import bus from './bus';
 
+
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
+
 Vue.component('grid-paginate-ajax', {
     template: '#grid-template-ajax',
     props: {

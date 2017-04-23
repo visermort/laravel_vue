@@ -4,9 +4,6 @@ import bus from './components/bus';
 
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
-    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
-
-
 
 // экземпляр - грид
     var GridPaginate = new Vue({
