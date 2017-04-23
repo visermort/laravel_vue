@@ -1,18 +1,17 @@
 
-
 import bus from './components/bus';
 
-    //Vue.prototype.$http = axios; при переходе на аксиос можно так
+//Vue.prototype.$http = axios; при переходе на аксиос можно так
 
-    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
-
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
 
 // экземпляр - грид
-    var GridPaginate = new Vue({
+    var demo = new Vue({
         el: '#demoGrid',
         data: {
             searchQuery: '',
+            gridData: [],
             extConfig: '',
             config: {
                 gridColumns: [
@@ -24,7 +23,6 @@ import bus from './components/bus';
                     {'key': 'payment_status', 'value': 'Статус'},
                     {'key': 'created_at', 'value': 'Дата'}
                 ],
-                requestUrl: '/payments-data-paginate',
                 actions: [ //кнопки действий для каждой строки
                     {
                         'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
@@ -63,11 +61,22 @@ import bus from './components/bus';
                     {title:'25', count: 25},
                     {title:'50', count: 50},
                     {title:'100', count: 100}
-                ],
-                perPage: 25
+                ]
+                //,perPage: 15
             }
+
         },
         methods: {
+            getData : function() {
+
+                this.$http.get('/payments-data').then(function(response){
+                    console.log(response.data.payments);
+                    this.gridData = response.data.payments;
+                    //colsole.log(this.greedData)
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            },
             correctConfig: function(){
                 //внешняя конфигурация - получается из бека и корректирует поля в instance
                 //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
@@ -77,8 +86,6 @@ import bus from './components/bus';
                     this.extConfig = JSON.parse(config);
                     //console.log(this.extConfig);
                     for (var item in this.extConfig) {
-                        //console.log(item, this.extConfig[item]);
-                        //console.log(this.config[item]);
                         if (this.config[item]) {
                             this.config[item] = this.extConfig[item];
                         }
@@ -86,14 +93,13 @@ import bus from './components/bus';
                 }
                 //console.log(this.config);
             }
+
         },
-        mounted: function(){
+
+        mounted: function() {
             console.log('mounted');
             this.correctConfig();//после загрузки страницы корректировка конфигурации
-                    //после чего вызываем событие через специально сделанный ради этого экземпляр
-            bus.$emit('loadconfig');
+            this.getData();
         }
-
     });
-
 

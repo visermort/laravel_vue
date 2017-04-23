@@ -2,7 +2,7 @@
 <!-- grid template -->
 <script type="text/x-template" id="grid-template-ajax">
     <div class="grid-data">
-        <input type="hidden" id="grid-data-form-config"  value="{{ $config }}" >
+        <input type="hidden" id="grid-data-form-config"  value="{{ $config or '' }}" >
         {{--tool bar - shown if there is actions_common--}}
         <div class="grid-data__header clearfix">
             <div class="grid-data__search_form col-sm-6" >

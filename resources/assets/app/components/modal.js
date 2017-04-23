@@ -4,6 +4,26 @@ import bus from './bus';
 // register modal component
 Vue.component('modal-component', {
     template: '#modal-template',
+    // template: '<transition name="modal">'+
+    //         '<div class="modal-mask" v-on:click="$emit("close")" >'+
+    //             '<div class="modal-wrapper"  >'+
+    //                 '<div class="modal-container modal-form" v-bind:class="modalParams.status" v-on:click.stop >'+
+    //                     '<div class="modal-form__header">'+
+    //                         '<div class="modal-form__header_text" >@{{ modalParams.title }}</div>'+
+    //                     '</div>'+
+    //
+    //                     '<div class="modal-form__body">'+
+    //                         '<div class="modal-form__body_message" >@{{ modalParams.message  }}</div>'+
+    //                     '</div>'+
+    //
+    //                     '<div class="modal-form__footer">'+
+    //                         '<button v-show="modalParams.url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>'+
+    //                         '<button class="modal-form__button btn btn-default" v-on:click="$emit("close")">Close</button>'+
+    //                     '</div>'+
+    //                 '</div>'+
+    //             '</div>'+
+    //         '</div>'+
+    //     '</transition>',
     props: {
         params: {}
     },

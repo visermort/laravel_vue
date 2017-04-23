@@ -16,6 +16,7 @@ mix.js('resources/assets/js/app.js', 'public/js/vendor.js')
     .styles('resources/assets/css/style.css', 'public/css/custom.css')
     .js('resources/assets/app/app_grid.js', 'public/js/grid.js')
     .js('resources/assets/app/app_tree.js', 'public/js/tree.js')
-    .js('resources/assets/app/payments.js', 'public/js/start_grid.js')
+    .js('resources/assets/app/app_grid_start.js', 'public/js/start_grid.js')
     .sourceMaps()
     .version();
+    //.browserSync('testlaravel.local');

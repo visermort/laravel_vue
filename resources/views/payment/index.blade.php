@@ -5,22 +5,28 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Billings</div>
+                    <div class="panel-heading">Demo grid with paginate.</div>
+                    <div class="">
+                        <ul>
+                            <li class="page-link">
+                                <a href="{{ action('PaymentController@index') }}">Config in Vue instance</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=1">Change config in backend 1</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=2">Change config in backend 2</a>
+                            </li>
+                            <li class="page-link">
+                                <a href="?config=3">Change config in backend 3</a>
+                            </li>
+                        </ul>
+                    </div>
 
                     <div class="demo-grid" id="demoGrid">
-                        {{--<form class="demo-grid__search_form col-sm-6" id="search" >--}}
-                            {{--<div class="col-sm-2">--}}
-                                {{--<label for="form-search-input-query">Search</label>--}}
-                            {{--</div>--}}
-                            {{--<div class="col-sm-10">--}}
-                                {{--<input id="form-search-input-query" class="demo-grid__search_input form-control" name="query" v-model="searchQuery">--}}
-                            {{--</div>--}}
-                        {{--</form>--}}
                         <demo-grid
                                 :data="gridData"
-                                :columns="gridColumns"
-                                {{--:filter-key="searchQuery"--}}
-                                :actions="actions">
+                                :config="config" >
                         </demo-grid>
                     </div>
                 </div>
@@ -38,7 +44,6 @@
 
 @section('scripts')
     @parent
-    {{--<script src="js/components/grid.js"></script>--}}
     <script type="text/javascript" src="{{ mix('js/start_grid.js') }}"></script>
 @endsection
 

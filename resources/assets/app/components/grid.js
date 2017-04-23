@@ -165,6 +165,7 @@ Vue.component('grid-paginate-ajax', {
                 this.checkAll = false;
                 this.checkedId = [];
                 this.idList = [];
+                
             });
         },
         makeSeach: function (){

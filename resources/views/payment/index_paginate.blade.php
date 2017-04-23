@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Billings</div>
+                    <div class="panel-heading">Demo grid with paginate. Sort, search, paginage by Ajax</div>
                     <div class="">
                         <ul>
                             <li class="page-link">
@@ -44,9 +44,7 @@
 @section('scripts')
     @parent
     <script type="text/javascript" src="{{ mix('js/grid.js') }}"></script>
-    {{--<script src="js/components/grid.js"></script>--}}
-    {{--<script src="js/components/greed.js"></script>--}}
-    {{--<script src="js/payments_paginate.js"></script>--}}
+
 
 @endsection
 
