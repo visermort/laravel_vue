@@ -55,3 +55,8 @@ Route::post('/payments/delete', 'PaymentController@delete');
 Route::get('/payments-paginate', 'PaymentController@indexPaginate');
 Route::get('/payments-data-paginate', 'PaymentController@getDataPaginate');
 
+//пример сокета
+route::get('/socket', 'SocketController@index');
+route::get('/message', 'SocketController@message');
+route::post('/sendmessage', 'SocketController@sendMessage');
+

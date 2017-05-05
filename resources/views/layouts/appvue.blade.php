@@ -54,6 +54,8 @@
                         <li><a href="{{ action('GoodController@startTree2') }}">Demo Tree</a></li>
                         <li><a href="{{ action('PaymentController@index') }}">Demo Grid</a></li>
                         <li><a href="{{ action('PaymentController@indexPaginate') }}">Demo Grid (ajax)</a></li>
+                        <li><a href="{{ action('SocketController@index') }}">Socket. ViewMessages</a></li>
+                        <li><a href="{{ action('SocketController@message') }}">Socket. SendMessage</a></li>
                     </ul>
 
                 </div>
