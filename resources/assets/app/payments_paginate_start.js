@@ -15,7 +15,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
             extConfig: '',
             config: {
                 gridColumns: [
-                    {'key': 'payment_id', 'value': 'Id'},
+                    {'key': 'id', 'value': 'Id'},
                     {'key': 'payment_order_id', 'value': 'Order Id', 'sort': false},
                     {'key': 'payment_summ', 'value': 'Сумма'},
                     {'key': 'payment_client_name', 'value': 'Клиент'},

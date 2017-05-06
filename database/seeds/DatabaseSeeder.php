@@ -17,6 +17,10 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::transaction(function () {
+            DB::table('payments')->delete();
+            DB::table('orders')->delete();
+            DB::table('goods')->delete();
+
             $faker = Faker::create();
             for ($i=0; $i<10; $i++) {
                 $good = Good::create([
@@ -26,7 +30,7 @@ class DatabaseSeeder extends Seeder
                 for ($j=0; $j<10; $j++) {
                     $count = mt_rand(1, 20);
                     $order = Order::create([
-                        'order_good_id' => $good->goods_id,
+                        'order_good_id' => $good->id,
                         'order_good_price' => $good->goods_price,
                         'order_count' => $count,
                         'order_summ' => $good->goods_price * $count,
@@ -37,7 +41,7 @@ class DatabaseSeeder extends Seeder
                     $payCount = mt_rand(1, 3);
                     for ($k=0; $k < $payCount; $k++) {
                         Payment::create([
-                            'payment_order_id' => $order->order_id,
+                            'payment_order_id' => $order->id,
                             'payment_summ' => $order->order_summ,
                             'payment_client_name' => $order->order_client_name,
                             'payment_client_phone' => $order->order_client_phone,
@@ -49,5 +53,8 @@ class DatabaseSeeder extends Seeder
                 }
             }
         });
+
+        $this->call(Calendar::class);
+
     }
 }

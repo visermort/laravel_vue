@@ -51,8 +51,8 @@ class PaymentController extends Controller
     public function getData()
     {
         $payments = Payment::select('payments.*');
-        $payments->addSelect(DB::raw('(`payment_id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
-        $payments->addSelect(DB::raw('(`payment_id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
+        $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
+        $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
 
         return json_encode(['payments' => $payments->get()]);
     }
@@ -60,7 +60,7 @@ class PaymentController extends Controller
     public function delete(Request $request)
     {
         $validator = Validator::make($request->all(), [
-                'id' => 'required|exists:payments,payment_id',
+                'id' => 'required|exists:payments,id',
             ]);
         if ($validator->fails()) {
             return json_encode(['status'=> false, 'message' => 'Wrong data']);
@@ -120,10 +120,10 @@ class PaymentController extends Controller
             (int) $request->per_page : config('vue.paginate'));
         $request->session()->put('grid-paginate-per-page', $perPage);
         $payments = Payment::select('payments.*');
-        $payments->addSelect(DB::raw('(`payment_id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
-        $payments->addSelect(DB::raw('(`payment_id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
+        $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
+        $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
         if ($request->has('search')) {
-            $payments = $payments->where('payment_id', 'like', '%'.$request->get('search').'%');
+            $payments = $payments->where('id', 'like', '%'.$request->get('search').'%');
             $payments = $payments->orWhere('payment_order_id', 'like', $request->get('search').'%');
             $payments = $payments->orWhere('payment_summ', 'like', $request->get('search').'%');
             $payments = $payments->orWhere('payment_client_name', 'like', $request->get('search').'%');

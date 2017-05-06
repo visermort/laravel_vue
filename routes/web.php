@@ -55,3 +55,7 @@ Route::post('/payments/delete', 'PaymentController@delete');
 Route::get('/payments-paginate', 'PaymentController@indexPaginate');
 Route::get('/payments-data-paginate', 'PaymentController@getDataPaginate');
 
+//timeline 
+Route::get('/calendar', 'CalendarController@index');
+Route::post('/calendar', 'CalendarController@getCalendar');
+

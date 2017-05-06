@@ -8,7 +8,7 @@ class Good extends Model
 {
     //
     protected $table = 'goods';
-    protected $primaryKey = 'goods_id';
+    protected $primaryKey = 'id';
 
 
     protected $fillable = ['goods_name', 'goods_price'];
