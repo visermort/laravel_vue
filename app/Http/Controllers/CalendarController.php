@@ -21,19 +21,26 @@ class CalendarController extends Controller
         //$boats = Boat::all();
         $dayBefore = $request->has('dayBefore') && is_int($request->dayBefore) ? $request->dayBefore : 1;
         $dayAfter = $request->has('dayAfter') && is_int($request->dayAfter) ? $request->dayAfter : 7;
-        $dateStart = Carbon::now()->subDay($dayBefore);
-        $dateEnd = Carbon::now()->addDay($dayAfter);
+        $dateStart = Carbon::now(3)->subDay($dayBefore)->startOfDay();
+        $dateEnd = Carbon::now(3)->addDay($dayAfter + 1)->startOfDay();
 
-        $calendar = Calendar::where('event_date', '>', $dateStart)->where('event_date', '<', $dateEnd)
+        $calendar = Calendar::where('event_date', '>=', $dateStart)->where('event_date', '<', $dateEnd)
             ->with('users')
-            //->with('boat')
+            ->orderBy('event_date', 'ASC')
             ->get();
         $boats = $calendar->groupBy('boat_id');
+        $boatNames = [];
+        $boats->each(function ($item, $key) use (&$boatNames) {
+            //$item->put('boat_name', Boat::find($key)->boat_name);
+            $boatNames[] = Boat::find($key)->boat_name;
+        });
        // dump($calendar);
 
         return json_encode([
-           // 'calendar' => $calendar,
-            'boats' => $boats
+            'boats' => $boats,
+            'boatNames' => $boatNames,
+            'dateStart' => $dateStart->toDateTimeString(),
+            'dateEnd' => $dateEnd->toDateTimeString(),
         ]);
     }
 }

@@ -1,5 +1,11 @@
 @extends('layouts.appvue')
 
+@section('styles')
+    @parent
+    <link href="{{ mix('/css/timeline.css') }}" rel="stylesheet">
+@endsection
+
+
 @section('content')
 
     <div class="container">

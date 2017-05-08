@@ -1,0 +1,93 @@
+.calendar {
+    display: flex;
+}
+.calendar-main {
+    overflow-x: scroll;
+}
+.calendar-left__header {
+    height: 80px;
+}
+.calendar-scale {
+    display: flex;
+    height: 80px;
+}
+.calendar-scale__item-day-content {
+    display: flex;
+}
+.calendar-scale__item-hour-content {
+    display: flex;
+}
+.calendar-scale__item-quarter{
+    width: 30px;
+}
+.calendar-scale__item-day-header,
+.calendar-scale__item-hour-header,
+.calendar-scale__item-quarter{
+    margin: 0 1px 1px 0;
+    text-align: center;
+}
+
+.calendar-scale__item-quarter.now {
+    width: 2px;
+    background-color: red;
+}
+.calendar-wakes__interval.now{
+    background-color: red;
+    padding: 0 1px;
+    cursor: default;
+}
+
+.calendar-wakes{
+    margin-bottom: 15px;
+}
+.calendar-wakes__interval {
+    margin: 0 1px 1px 0;
+    padding: 0 15px;
+    height: 30px ;
+}
+.calendar-wakes__interval:hover {
+    height: 30px ;
+}
+
+.calendar-wakes__boat {
+    display: flex;
+    flex-basis: 30px;
+}
+.calendar-left {
+    padding: 0 10px;
+}
+.calendar-boat {
+    height: 30px;
+}
+
+/*цвета и курсор на шкале*/
+.calendar-scale__item-day-header,
+.calendar-scale__item-hour-header,
+.calendar-scale__item-quarter{
+    background-color: rgb(240, 242, 247);
+}
+
+.calendar-wakes__interval {
+    cursor: pointer;
+    background-color: rgb(240, 242, 247);
+}
+.calendar-wakes__interval:hover {
+    background-color: #c1d5f0;
+}
+.calendar-wakes__interval.past {
+    background-color: rgb(219, 220, 225);
+    cursor: default;
+}
+.calendar-wakes__interval.past:hover {
+    background-color: rgb(219, 220, 225);
+}
+.calendar-wakes__interval.seans{
+    background-color: #45dc9e;
+}
+.calendar-wakes__interval.seans.past{
+    background-color: #a1a1a3;
+    cursor: pointer;
+}
+.calendar-wakes__interval.seans:hover{
+    background-color: #40c68d;
+}

@@ -14,8 +14,10 @@
     {{--<link href="/css/app.css" rel="stylesheet">--}}
     {{--<link href="/css/style.css" rel="stylesheet">--}}
     {{--<link href="/css/font-awesome.min.css" rel="stylesheet">--}}
-    <link href="{{ mix('/css/vendor.css') }}" rel="stylesheet">
-    <link href="{{ mix('/css/custom.css') }}" rel="stylesheet">
+    @section('styles')
+        <link href="{{ mix('/css/vendor.css') }}" rel="stylesheet">
+        <link href="{{ mix('/css/custom.css') }}" rel="stylesheet">
+    @show
 
     {{--<script--}}
             {{--src="https://code.jquery.com/jquery-2.2.4.min.js"--}}
