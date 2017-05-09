@@ -15,31 +15,42 @@ Vue.component('my-calendar', {
             dateEnd: new Date(),
             boats: {},
             boatNames: [],
-            scroll: true//запускать ли скрулл - только при загрузке
+            scroll: true,//запускать ли скрулл - только при загрузке
+            scrollDate: '',//текущая дата при скрулл
+            intervalWidth: 40
         }
     },
     computed: {
         timeScale: function(){
-            var result = [], hours = [], quarters = [], day = null, dayStr = '';
+            var result = [], hours = [], quarter = '', day = null, dayStr = '';
             var now = new Date().getTime();
-            for (var time=this.dateStart.getTime(); time < this.dateEnd.getTime(); time += (1000 * 60 * 60 * 24)) {//через 1 сутки
-                //console.log(time, new Date(time));
-                hours = [];
-                for (var timeDay=time; timeDay < time + (1000 * 60 * 60 * 24); timeDay += (1000 * 60 * 60)) {//через 1 час
-                    quarters = [];
-                    for (var timeHour=timeDay; timeHour < timeDay + (1000 * 60 * 60); timeHour += (1000 * 60 * 15)) {//через 15 минут
-                        if (timeHour - now <(1000 * 60 * 15) && timeHour - now >= 0 ){
-                            //шкала настоящего
-                            quarters.push("");//пустое значение
-                        }
-                        if (timeHour - now <(1000 * 60 * 15) && timeHour - now >= 0 ){
-                            //шкала настоящего
-                        }
-                        quarters.push(new Date(timeHour).getMinutes());
-                    }
-                    hours.push({start: new Date(timeDay).getHours(), quarters: quarters});
+            // for (var time=this.dateStart.getTime(); time < this.dateEnd.getTime(); time += (1000 * 60 * 60 * 24)) {//через 1 сутки
+            //     //console.log(time, new Date(time));
+            //     hours = [];
+            //     for (var timeDay=time; timeDay < time + (1000 * 60 * 60 * 24); timeDay += (1000 * 60 * 60)) {//через 1 час
+            //         quarters = [];
+            //         for (var timeHour=timeDay; timeHour < timeDay + (1000 * 60 * 60); timeHour += (1000 * 60 * 15)) {//через 15 минут
+            //             if (timeHour - now <(1000 * 60 * 15) && timeHour - now >= 0 ){
+            //                 //шкала настоящего
+            //                 quarters.push("");//пустое значение
+            //             }
+            //             if (timeHour - now <(1000 * 60 * 15) && timeHour - now >= 0 ){
+            //                 //шкала настоящего
+            //             }
+            //             quarters.push(new Date(timeHour).getMinutes());
+            //         }
+            //         hours.push({start: new Date(timeDay).getHours(), quarters: quarters});
+            //     }
+            //     result.push({start: new Date(time).toLocaleDateString(), hours: hours});
+            // }
+
+            for (var time=this.dateStart.getTime(); time < this.dateEnd.getTime(); time += (1000 * 60 * 15)) {//через 15 минут
+                if (time - now <(1000 * 60 * 15) && time - now >= 0 ){
+                    //шкала настоящего
+                    result.push("");//пустое значение
                 }
-                result.push({start: new Date(time).toLocaleDateString(), hours: hours});
+                quarter = new Date(time);
+                result.push(quarter.getHours()+':'+quarter.getMinutes());
             }
             return result;
         },
@@ -109,7 +120,7 @@ Vue.component('my-calendar', {
 
             if (this.scroll) {
                 //если скролл ещё не трогали, то запустим автомат скрулл
-                var scrollLeft = 31 * (new Date().getTime() - this.dateStart.getTime()) / (1000 * 60 * 15);
+                var scrollLeft = this.intervalWidth * (new Date().getTime() - this.dateStart.getTime()) / (1000 * 60 * 15);
                 setTimeout(function () {
                     var wrapper = document.getElementById('calendar-main');
                     wrapper.scrollLeft = scrollLeft - wrapper.offsetWidth / 3;
@@ -126,7 +137,7 @@ Vue.component('my-calendar', {
 
     },
     methods: {
-        getRequest: function() {
+        getRequest: function () {
             var rdata = {
                 dayBefore: this.config.dayBefore,
                 dayAfter: this.config.dayAfter
@@ -134,7 +145,7 @@ Vue.component('my-calendar', {
             this.loading = true;
             //запрос
             console.log(this.config.requestUrl);
-            this.$http.post(this.config.requestUrl, rdata).then(function(responce){
+            this.$http.post(this.config.requestUrl, rdata).then(function (responce) {
                 this.loading = false;
                 console.log(responce);
                 console.log(responce.data.dateStart, responce.data.dateEnd, responce.data.boats);
@@ -153,16 +164,23 @@ Vue.component('my-calendar', {
         },
         wrapperScroll: function () {
             this.scroll = false;
+            this.scrollDate = this.getScrollDate();
+        },
+        getScrollDate: function () {
+            if (document.getElementById('calendar-main') &&
+                document.getElementById('calendar-main').scrollLeft !== null) {
+                var scroll = document.getElementById('calendar-main').scrollLeft;
+                return new Date(this.dateStart.getTime() + (1000 * 60 * 15 * scroll / this.intervalWidth)).toLocaleDateString();
+            }
         }
-
 
     },
     mounted: function(){
         var load = this.getRequest;
         load();
-        setInterval(function(){
-            load();
-        }, 10000);
+        // setInterval(function(){
+        //     load();
+        // }, 10000);
 
         //внутри функци  метод не виден, поэтому переменная
         //var func = this.setLocalPerPage;
