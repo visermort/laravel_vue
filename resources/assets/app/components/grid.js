@@ -6,7 +6,24 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
 Vue.component('grid-paginate-ajax', {
     template: '#grid-template-ajax',
     props: {
-        config: {}
+        config: {
+            gridColumns: [],
+            requestUrl: '',
+            requestContent: '',
+            requestContentKey: '',
+            actions: [ //кнопки действий для каждой строки
+            ],
+            actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
+            ],
+            actionsCommonDisable: '', //действия недоступны для строк - условие из поля данных
+            perPages: [
+                {title:'15', count: 15},
+                {title:'25', count: 25},
+                {title:'50', count: 50},
+                {title:'100', count: 100}
+            ],
+            perPage: 25
+        }
     },
     data: function () {
         var sortOrders = {};
@@ -132,44 +149,43 @@ Vue.component('grid-paginate-ajax', {
                 data.per_page = this. localPerPage;
                 console.log('perpage '+data.per_page);
             }
+            var that = this;
 
-            this.loading = true;
-            //запрос
-            this.$http.get(this.config.requestUrl, {params: data}).then(function(response){
-                this.loading = false;
-                console.log(response);
-                this.gridData = response.data.payments.data;
-                //для селектов очицаем массив и делаем список всех доступных ид
-                this.checkAll = false;
-                this.checkedId = []; //массив выбранных checkbox
-                var idList2 = [];
-                var columns2 = this.config.gridColumns;
-                var actions_common_disable2 = this.config.actions_common_disable;
-                this.gridData.forEach(function(item){
-                    if (actions_common_disable2 == null || !item[actions_common_disable2]) {
-                        idList2.push(item[columns2[0].key]);
-                    }
+            this.doRequest(
+                this.config.requestUrl,//url
+                {params: data},//data
+                function(response) {
+                    that.gridData = response.data.payments.data;
+                    //для селектов очицаем массив и делаем список всех доступных ид
+                    that.checkAll = false;
+                    that.checkedId = []; //массив выбранных checkbox
+                    var idList2 = [];
+                    var columns2 = that.config.gridColumns;
+                    var actions_common_disable2 = that.config.actions_common_disable;
+                    that.gridData.forEach(function(item){
+                        if (actions_common_disable2 == null || !item[actions_common_disable2]) {
+                            idList2.push(item[columns2[0].key]);
+                        }
+                    });
+                    that.idList = idList2;
+
+                    that.paginateData = {
+                        from: response.data.payments.from,
+                        to: response.data.payments.to,
+                        total: response.data.payments.total,
+                        per_page: response.data.payments.per_page,
+                        current_page: response.data.payments.current_page,
+                        last_page: response.data.payments.last_page,
+                        next_page_url: response.data.payments.next_page_url,
+                        prev_page_url: response.data.payments.prev_page_url
+                    };
+
+                },
+                function(error) {
+                    that.checkAll = false;
+                    that.checkedId = [];
+                    that.idList = [];
                 });
-                this.idList = idList2;
-
-                this.paginateData = {
-                    from: response.data.payments.from,
-                    to: response.data.payments.to,
-                    total: response.data.payments.total,
-                    per_page: response.data.payments.per_page,
-                    current_page: response.data.payments.current_page,
-                    last_page: response.data.payments.last_page,
-                    next_page_url: response.data.payments.next_page_url,
-                    prev_page_url: response.data.payments.prev_page_url
-                };
-            }).catch(function (error) {
-                this.loading = false;
-                console.log(error);
-                this.checkAll = false;
-                this.checkedId = [];
-                this.idList = [];
-                
-            });
         },
         makeSeach: function (){
             this.dataPage = 1;
@@ -192,7 +208,27 @@ Vue.component('grid-paginate-ajax', {
             var element = this.config.gridColumns[from];
             this.config.gridColumns.splice(from, 1);
             this.config.gridColumns.splice(to, 0, element);
+        },
+
+        doRequest: function(url, data, callback, fail) {
+            this.loading = true;
+            //запрос
+            this.$http.get(url, data).then(function(response){
+                this.loading = false;
+                console.log(response);
+                callback(response);
+            }).catch(function (error) {
+                this.loading = false;
+                console.log(error);
+                if (fail) {
+                    fail(error);
+                }
+            });
+        },
+        gridDataClick: function (entry){
+            console.log(entry);
         }
+
     },
     mounted: function(){
         //внутри функци  метод не виден, поэтому переменная

@@ -22,6 +22,8 @@ import bus from './components/bus';
                     {'key': 'created_at', 'value': 'Дата'}
                 ],
                 requestUrl: '/payments-data-paginate',
+                requestContent: '/payments-data-details',
+                requestContentKey: 'id',
                 actions: [ //кнопки действий для каждой строки
                     {
                         'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',

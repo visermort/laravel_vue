@@ -151,6 +151,9 @@
                 margin: 0;
             }
         }
+        &-cell-content.clickable {
+            cursor: pointer;
+        }
 
 
     }
@@ -181,6 +184,7 @@
 
         &_link{
             color: #444;
+            cursor: pointer;
             &:hover {
                 border-color: #42b983;
                 color: #444;

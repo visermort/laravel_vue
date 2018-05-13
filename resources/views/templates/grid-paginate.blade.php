@@ -71,7 +71,11 @@
                                v-bind:value="entry[config.gridColumns[0].key]">
                         <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
                     </td>
-                    <td v-for="key in config.gridColumns">
+                    <td class="grid-data__table-cell-content"
+                        {{--если в конфиге задано, то по клику событие и запрос--}}
+                        v-bind:class="{clickable:config.requestContent}"
+                        v-on:click="(config.requestContent ? gridDataClick(config.requestContentKey ? entry[config.requestContentKey] : null) : null)"
+                        v-for="key in config.gridColumns">
                         @{{entry[key.key]}}
                     </td>
                     <td v-if="config.actions.length">
