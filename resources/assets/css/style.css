@@ -40,8 +40,21 @@
     padding-left: 2em;
 }
 
-
-
+.grid-data {
+    position: relative;
+}
+.grid-data__dragged {
+    position: absolute;
+    z-index: 1000;
+    display: none;
+    background-color: #fff;
+    opacity: 0.6;
+    padding: 10px;
+    font-weight: bold;
+}
+.grid-data__dragged.dragged {
+    display: block;
+}
 /*grid*/
 
 .grid-data__table {
@@ -62,7 +75,7 @@
 
     /*background-color: #b9092c;*/
     color: rgba(255,255,255,0.66);
-    cursor: pointer;
+    /*cursor: pointer;*/
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -78,10 +91,32 @@
 .grid-data__table td {
     /*min-width: 120px;*/
     padding: 8px 10px;
+
+}
+.grid-data__table_head th {
+    padding: 0;
+}
+.grid-data__table_head label {
+    margin: 8px 10px;
+
+}
+.grid-data__table_head-drag{
+    padding: 8px 10px;
+    cursor: move;
+    position: relative;
 }
 
 .grid-data__table_head .active {
     color: #fff;
+}
+.grid-data__table_head_link {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+.grid-data__table_head_link:hover {
+    color: #fff;
+    text-decoration: none;
 }
 .grid-data__table_head .disable {
     cursor: default;
@@ -429,4 +464,3 @@ input[type="checkbox"].disabled:checked +label{
         background-color:rgb(255,255,255);
     }
 }
-

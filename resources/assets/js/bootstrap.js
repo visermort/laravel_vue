@@ -19,6 +19,11 @@ require('bootstrap-sass');
 
 window.Vue = require('vue');
 
+import VueDragDrop from 'vue-drag-drop';
+
+Vue.use(VueDragDrop);
+
+
 require('vue-resource');
 
 

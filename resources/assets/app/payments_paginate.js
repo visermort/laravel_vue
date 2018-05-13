@@ -83,6 +83,7 @@ import bus from './components/bus';
                 }
                 //console.log(this.config);
             }
+
         },
         mounted: function(){
             console.log('mounted');

@@ -27,7 +27,7 @@ Vue.component('grid-paginate-ajax', {
             checkAll: false,//выбраны все checkbox
             checkedId: [], //массив выбранных checkbox
             idList: [],     //список id - для наполнения предыдущего массива
-            localPerPage: 0
+            localPerPage: 0,
         }
     },
     computed: {
@@ -183,6 +183,15 @@ Vue.component('grid-paginate-ajax', {
         },
         setLocalPerPage: function(){
             this.localPerPage = this.config.perPage;
+        },
+        handleDrop(item, data) {
+            this.moveColumn(data.moved, item);
+        },
+
+        moveColumn: function(from, to){
+            var element = this.config.gridColumns[from];
+            this.config.gridColumns.splice(from, 1);
+            this.config.gridColumns.splice(to, 0, element);
         }
     },
     mounted: function(){

@@ -1,7 +1,7 @@
 
 <!-- grid template -->
 <script type="text/x-template" id="grid-template-ajax">
-    <div class="grid-data">
+    <div class="grid-data" id="grig-data">
         <input type="hidden" id="grid-data-form-config"  value="{{ $config or '' }}" >
         {{--tool bar - shown if there is actions_common--}}
         <div class="grid-data__header clearfix">
@@ -37,24 +37,31 @@
             <div id="fountainG_7" class="fountainG"></div>
             <div id="fountainG_8" class="fountainG"></div>
         </div>
+        {{--таблица--}}
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
             <tr>
-                <th v-if="config.actionsCommon.length">
+                <th class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
-                <th v-for="key in config.gridColumns"
-                    v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
-                    v-bind:class="{ active: sortKey == key.key, disable: key.sort == false }" >
-                    @{{ key.value | capitalize }}
-                    <span v-if="key.sort != false" class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
+                <th  v-for="(key, index) in config.gridColumns">
+                    <drop @drop="handleDrop(index, ...arguments)">
+                        <drag class="grid-data__table_head-drag" :transfer-data="{moved: index}" >
+                            <a class="grid-data__table_head_link"
+                                v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
+                                v-bind:class="{ active: sortKey == key.key, disable: key.sort == false }" >
+                                @{{ key.value | capitalize }}
+                                <span v-if="key.sort != false" class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
+                            </a>
+                        </drag>
+                    </drop>
                 </th>
-                <th v-if="config.actions.length">Actions</th>
+                <th class="grid-data__table_head_actions" v-if="config.actions.length">Actions</th>
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
                 <tr v-for="entry in gridData">
-                    <th v-if="config.actionsCommon.length">
+                    <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
                         <input v-if="(config.actionsCommon_disable != '' && entry[config.actionsCommonDisable])"
                                v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
                                type="checkbox" class="disabled" >
@@ -63,7 +70,7 @@
                                type="checkbox" v-model="checkedId"
                                v-bind:value="entry[config.gridColumns[0].key]">
                         <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
-                    </th>
+                    </td>
                     <td v-for="key in config.gridColumns">
                         @{{entry[key.key]}}
                     </td>
@@ -98,7 +105,7 @@
                 <ul class="grid-data__paginate_list">
                     <li class="grid-data__paginate_item" v-for="page in paginateButtons">
                         <span class="grid-data__paginate_span" v-if="page.page == dataPage" >@{{ page.title }}</span>
-                        <a class="grid-data__paginate_link" v-else v-on:click.prevent="setPage(page.page)" href="#" >@{{ page.title }}</a>
+                        <a class="grid-data__paginate_link" v-else v-on:click.prevent="setPage(page.page)" >@{{ page.title }}</a>
                     </li>
                 </ul>
             </div>
@@ -136,28 +143,3 @@
             :params="params">
     </modal-component>
 </div>
-
-<!-- template for the modal component -->
-<script type="text/x-template" id="modal-template">
-    <transition name="modal">
-        <div class="modal-mask" v-on:click="$emit('close')" >
-            <div class="modal-wrapper"  >
-                <div class="modal-container modal-form" v-bind:class="modalParams.status" v-on:click.stop >
-
-                    <div class="modal-form__header">
-                        <div class="modal-form__header_text" >@{{ modalParams.title }}</div>
-                    </div>
-
-                    <div class="modal-form__body">
-                        <div class="modal-form__body_message" >@{{ modalParams.message  }}</div>
-                    </div>
-
-                    <div class="modal-form__footer">
-                        <button v-show="modalParams.url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>
-                        <button class="modal-form__button btn btn-default" v-on:click="$emit('close')">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </transition>
-</script>
