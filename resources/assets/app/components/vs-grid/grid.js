@@ -1,12 +1,11 @@
-import bus from './bus';
+require('./modal.vue');
 
-import contentElement from './content.vue';
-
+import vsbus from './vsbus';
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
-Vue.component('grid-paginate-ajax', {
-    template: '#grid-template-ajax',
+Vue.component('vs-grid', {
+    template: require('./grid.html'), //'#grid-template-ajax',
     props: {
         config: {
             gridColumns: [
@@ -30,11 +29,12 @@ Vue.component('grid-paginate-ajax', {
                 {title:'50', count: 50},
                 {title:'100', count: 100}
             ],
-            perPage: 25
+            perPage: 25,
+            contentElement: {}//element для контента
         }
     },
     data: function () {
-        var sortOrders = {};
+        let sortOrders = {};
         //console.log(this.config);
         this.config.gridColumns.forEach(function (key) {
             if (key.sort == null || key.sort) {
@@ -62,12 +62,12 @@ Vue.component('grid-paginate-ajax', {
     },
     computed: {
         paginateButtons: function(){
-            var result = [],
+            let result = [],
                 pageOffset = 2;
-            if (!this.paginateData || !this.paginateData.last_page || this.paginateData.last_page == 0) {
+            if (!this.paginateData || !this.paginateData.last_page || this.paginateData.last_page === 0) {
                 return result;
             } else {
-                var from = this.dataPage-pageOffset > 0 ? this.dataPage-pageOffset : 1,
+                let from = this.dataPage-pageOffset > 0 ? this.dataPage-pageOffset : 1,
                     to = this.dataPage+pageOffset <= this.paginateData.last_page ?
                     this.dataPage+pageOffset : this.paginateData.last_page;
                 if (this.dataPage > pageOffset + 1) {
@@ -76,7 +76,7 @@ Vue.component('grid-paginate-ajax', {
                 if (this.dataPage > 1) {
                     result.push({title: '<', page: this.dataPage-1});
                 }
-                for (var i = from; i <= to; i++){
+                for (let i = from; i <= to; i++){
                     result.push({title: i, page: i});
                 }
                 if (this.dataPage < this.paginateData.last_page) {
@@ -107,13 +107,13 @@ Vue.component('grid-paginate-ajax', {
         runAction: function(action, method, id, message){
             if (action) {
                 //console.log(action, method, id, message);
-                if (method == 'get') {
+                if (method === 'get') {
                     //get - просто ссылка + ид
                     window.location = action + id;
                 } else {
                     //пост
                     //вызываем событие на подтвержение операции
-                    bus.$emit('confirm_action', {
+                    vsbus.$emit('confirm_action', {
                         'title': 'Please, confirm action!',
                         'message': message,
                         'status': true,
@@ -127,7 +127,7 @@ Vue.component('grid-paginate-ajax', {
             //console.log(action, message, this.checkedId);
             if (action && this.checkedId.length > 0) {
                 //вызываем событие на подтвержение операции
-                bus.$emit('confirm_action', {
+                vsbus.$emit('confirm_action', {
                     'title': 'Please, confirm action!',
                     'message': message,
                     'status': '',
@@ -135,9 +135,9 @@ Vue.component('grid-paginate-ajax', {
                     'id': this.checkedId
                 });
 
-            } else if (this.checkedId.length == 0){
+            } else if (this.checkedId.length === 0){
                 //сообщение, что не выбраны строки
-                bus.$emit('confirm_action', {
+                vsbus.$emit('confirm_action', {
                     'title': 'Warning!',
                     'message': 'Please, select some rows!',
                     'status': 'modalwarning',
@@ -147,7 +147,7 @@ Vue.component('grid-paginate-ajax', {
             }
         },
         getRequest: function() {
-            var data = {};
+            let data = {};
             if (this.dataPage > 0) {
                 data.page = this.dataPage;
             }
@@ -162,7 +162,7 @@ Vue.component('grid-paginate-ajax', {
                 data.per_page = this. localPerPage;
                 console.log('perpage '+data.per_page);
             }
-            var that = this;
+            let that = this;
 
             this.doRequest(
                 this.config.requestUrl,//url
@@ -172,9 +172,9 @@ Vue.component('grid-paginate-ajax', {
                     //для селектов очицаем массив и делаем список всех доступных ид
                     that.checkAll = false;
                     that.checkedId = []; //массив выбранных checkbox
-                    var idList2 = [];
-                    var columns2 = that.config.gridColumns;
-                    var actions_common_disable2 = that.config.actions_common_disable;
+                    let idList2 = [];
+                    let columns2 = that.config.gridColumns;
+                    let actions_common_disable2 = that.config.actions_common_disable;
                     that.gridData.forEach(function(item){
                         if (actions_common_disable2 == null || !item[actions_common_disable2]) {
                             idList2.push(item[columns2[0].key]);
@@ -218,20 +218,21 @@ Vue.component('grid-paginate-ajax', {
         },
 
         moveColumn: function(from, to){
-            var element = this.config.gridColumns[from];
+            let element = this.config.gridColumns[from];
             this.config.gridColumns.splice(from, 1);
             this.config.gridColumns.splice(to, 0, element);
         },
 
         doRequest: function(url, data, callback, fail) {
             this.loading = true;
+            let that = this;
             //запрос
             this.$http.get(url, data).then(function(response){
-                this.loading = false;
+                that.loading = false;
                 console.log(response);
                 callback(response);
             }).catch(function (error) {
-                this.loading = false;
+                that.loading = false;
                 console.log(error);
                 if (fail) {
                     fail(error);
@@ -241,12 +242,12 @@ Vue.component('grid-paginate-ajax', {
         gridDataClick: function (key){
             console.log(key);
             //this.contentdata.key = key;
-            var that = this;
+            let that = this;
             this.doRequest(
                 this.config.requestContent.url+'/'+key,
                 null,
                 function(response){
-                    if (contentElement && response.body) {
+                    if (that.contentElement && response.body) {
                         //contentElement.props.params = response.body;
                         //console.log(contentElement.props.params);
                         that.contentdata.key = key;
@@ -262,9 +263,9 @@ Vue.component('grid-paginate-ajax', {
     },
     mounted: function(){
         //внутри функци  метод не виден, поэтому переменная
-        var func = this.setLocalPerPage;
+        let func = this.setLocalPerPage;
         //ловим событие
-        bus.$on('loadconfig', function(){
+        vsbus.$on('loadconfig', function(){
             console.log('После старта делаем запрос');
             func();//переписать perPage из конфиг
             //в этом месте нужно делать запрос, но поскольку он запускается при изменении localPerPage, запускать специально не нужно

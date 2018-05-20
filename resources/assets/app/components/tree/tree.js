@@ -1,4 +1,4 @@
-import bus from './bus';
+import treebus from './treebus';
 
 // define the item component
 Vue.component('tree-item', {
@@ -86,7 +86,7 @@ Vue.component('tree-item', {
         copyData: function () {
             //перенос данных из компонента в инстанс
             //console.log('instance', this.objectData, this.objectTemplate);
-            bus.$emit('treeItemClick', {
+            treebus.$emit('treeItemClick', {
                 data: this.objectData ? this.objectData : {},
                 template: this.objectTemplate
             });

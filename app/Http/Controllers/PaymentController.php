@@ -10,16 +10,19 @@ use Faker;
 
 class PaymentController extends Controller
 {
-    //
+
+    /** вывод таблицы
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
     {
-
         $config = [];
         //из сессии - сохранённое значение элементов на страницу
-//        if ($request->session()->has('grid-paginate-per-page') &&
-//            (int) $request->session()->get('grid-paginate-per-page') > 0) {
-//            $config['perPage'] = $request->session()->get('grid-paginate-per-page');
-//        }
+        if ($request->session()->has('grid-paginate-per-page') &&
+            (int) $request->session()->get('grid-paginate-per-page') > 0) {
+            $config['perPage'] = $request->session()->get('grid-paginate-per-page');
+        }
         //в зависимости от параметров  - разная конфигурация
         if ($request->has('config')) {
             switch ($request->config) {
@@ -50,19 +53,6 @@ class PaymentController extends Controller
     }
 
     /**
-     * больше не используется, запрос от грид первой версии
-     * @return string
-     */
-    public function getData()
-    {
-        $payments = Payment::select('payments.*');
-        $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
-        $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
-
-        return json_encode(['payments' => $payments->get()]);
-    }
-
-    /**
      * ответ на тестовый запрос на удаление
      * @param Request $request
      * @return string
@@ -86,46 +76,7 @@ class PaymentController extends Controller
         }
     }
 
-    /** вывод таблицы
-     * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function indexPaginate(Request $request)
-    {
-        $config = [];
-        //из сессии - сохранённое значение элементов на страницу
-        if ($request->session()->has('grid-paginate-per-page') &&
-            (int) $request->session()->get('grid-paginate-per-page') > 0) {
-            $config['perPage'] = $request->session()->get('grid-paginate-per-page');
-        }
-        //в зависимости от параметров  - разная конфигурация
-        if ($request->has('config')) {
-            switch ($request->config) {
-                case ('1'):
-                    $config['actions'] = [];
-                    break;
-                case ('2'):
-                    $config['actionsCommon'] = [];
-                    break;
-                case ('3'):
-                    $config['actions'] = [
-                            [
-                            'value' => '<i class="fa fa-trash" aria-hidden="true"></i>',
-                            'title'=> 'Delete payment',
-                            'action'=> '/payments/delete',
-                            'method'=> 'post',
-                            'message'=> 'Do you really want to delete payment?',
-                            'disable' => 'check_box_disable'//условие здесь другое
-                            ],
-                        ];
-                    break;
-            }
-        }
-        return view('payment.index_paginate', [
-            'config' => json_encode($config),
 
-        ]);
-    }
 
     /**
      * данные для таблицы

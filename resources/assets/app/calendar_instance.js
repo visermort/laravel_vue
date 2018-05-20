@@ -1,12 +1,10 @@
 
 
-import bus from './components/bus';
-
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
 
 // экземпляр - календаря
-    var CalendarInstance = new Vue({
+    let CalendarInstance = new Vue({
         el: '#calendar',
         data: {
             config: {

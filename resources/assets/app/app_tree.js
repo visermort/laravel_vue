@@ -1,7 +1,5 @@
 
-
-
-require('./components/tree');
+require('./components/tree/tree');
 
 require('./tree');
 

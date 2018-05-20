@@ -1,7 +1,7 @@
 
-import bus from './components/bus';
+import treebus from './components/tree/treebus';
 
-var tree = new Vue({
+let tree = new Vue({
     el: '#goods',
     data: {
         treeData: [],
@@ -23,13 +23,14 @@ var tree = new Vue({
             this.objectsTemplate = data.template;
         }
 
+
     },
     mounted: function() {
         //после загрузки грузим данные
         this.getChilds('/api/goods2');
         //по событию - клик на элемент - копирование данных в инстанс
-        var func = this.writeData;
-        bus.$on('treeItemClick', function(data) {
+        let func = this.writeData;
+        treebus.$on('treeItemClick', function(data) {
             func(data);
         });
     }

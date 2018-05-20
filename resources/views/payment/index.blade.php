@@ -1,11 +1,12 @@
 @extends('layouts.appvue')
 
 @section('content')
+
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Demo grid with paginate.</div>
+                    <div class="panel-heading">Demo grid with paginate. Sort, search, paginage by Ajax</div>
                     <div class="">
                         <ul>
                             <li class="page-link">
@@ -23,20 +24,18 @@
                         </ul>
                     </div>
 
-                    <div class="demo-grid" id="demoGrid">
-                        <demo-grid
-                                :data="gridData"
-                                :config="config" >
-                        </demo-grid>
+                    <div class="grid" id="grid-vs">
+
+                        <vs-grid :config="config"></vs-grid>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
     {{--file with component templates--}}
-    @include('templates.grid');
+{{--    @include('templates.grid-paginate');--}}
 
 
 
@@ -44,7 +43,9 @@
 
 @section('scripts')
     @parent
-    <script type="text/javascript" src="{{ mix('js/start_grid.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/grid.js') }}"></script>
+
+
 @endsection
 
 

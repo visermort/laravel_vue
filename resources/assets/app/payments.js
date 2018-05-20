@@ -1,17 +1,17 @@
 
-import bus from './components/bus';
 
-//Vue.prototype.$http = axios; при переходе на аксиос можно так
+import vsbus from './components/vs-grid/vsbus';
 
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
+import contentElement from './components/content/content.js';
+
+    //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
 
 // экземпляр - грид
-    var demo = new Vue({
-        el: '#demoGrid',
+    var GridPaginate = new Vue({
+        el: '#grid-vs',
         data: {
             searchQuery: '',
-            gridData: [],
             extConfig: '',
             config: {
                 gridColumns: [
@@ -23,6 +23,11 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
                     {'key': 'payment_status', 'value': 'Статус'},
                     {'key': 'created_at', 'value': 'Дата'}
                 ],
+                requestUrl: '/payments-data-paginate',
+                requestContent: {
+                    url: '/payments-data-details',
+                    key: 'id'
+                },
                 actions: [ //кнопки действий для каждой строки
                     {
                         'value': '<i class="fa fa-pencil" aria-hidden="true"></i>',
@@ -61,31 +66,23 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
                     {title:'25', count: 25},
                     {title:'50', count: 50},
                     {title:'100', count: 100}
-                ]
-                //,perPage: 15
+                ],
+                perPage: 25,
+                contentElement: contentElement
             }
-
         },
         methods: {
-            getData : function() {
-
-                this.$http.get('/payments-data').then(function(response){
-                    console.log(response.data.payments);
-                    this.gridData = response.data.payments;
-                    //colsole.log(this.greedData)
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            },
             correctConfig: function(){
                 //внешняя конфигурация - получается из бека и корректирует поля в instance
                 //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
                 //от реквест корректировать грид
-                var config = document.querySelector('#grid-data-form-config').getAttribute('value');
+                let config = document.querySelector('#grid-data-form-config').getAttribute('value');
                 if (config) {
                     this.extConfig = JSON.parse(config);
                     //console.log(this.extConfig);
-                    for (var item in this.extConfig) {
+                    for (let item in this.extConfig) {
+                        //console.log(item, this.extConfig[item]);
+                        //console.log(this.config[item]);
                         if (this.config[item]) {
                             this.config[item] = this.extConfig[item];
                         }
@@ -95,11 +92,13 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
             }
 
         },
-
-        mounted: function() {
+        mounted: function(){
             console.log('mounted');
             this.correctConfig();//после загрузки страницы корректировка конфигурации
-            this.getData();
+                    //после чего вызываем событие через специально сделанный ради этого экземпляр
+            vsbus.$emit('loadconfig');
         }
+
     });
+
 

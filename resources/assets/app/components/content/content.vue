@@ -120,8 +120,6 @@
 
 <script>
 
-    import bus from './bus';
-
     export default {
         //name: '',
         props: {

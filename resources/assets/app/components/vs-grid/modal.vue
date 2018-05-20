@@ -25,7 +25,7 @@
 
 <script>
 
-    import bus from './bus';
+    import vsbus from './vsbus';
 
     export default {
         //name: 'modal_component',
@@ -56,7 +56,7 @@
             },
             postMessage: function(status, message) {
                 //вызываем событие - cообщение о выполненной операции
-                bus.$emit('confirm_action', {
+                vsbus.$emit('confirm_action', {
                     'title': 'Result of action!',
                     'message': message,
                     'status': status,
@@ -65,7 +65,7 @@
                 });
             },
             modalClose: function() {
-                bus.$emit('modal_close');
+                vsbus.$emit('modal_close');
             }
         },
         computed: {

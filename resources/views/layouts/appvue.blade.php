@@ -54,8 +54,7 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
                         <li><a href="{{ action('GoodController@startTree2') }}">Demo Tree</a></li>
-{{--                        <li><a href="{{ action('PaymentController@index') }}">Demo Grid</a></li>--}}
-                        <li><a href="{{ action('PaymentController@indexPaginate') }}">Demo Grid</a></li>
+                        <li><a href="{{ action('PaymentController@index') }}">Demo Grid</a></li>
                     </ul>
 
                 </div>
