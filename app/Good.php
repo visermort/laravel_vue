@@ -11,5 +11,8 @@ class Good extends Model
     protected $primaryKey = 'id';
 
 
+    /**
+     * @var array
+     */
     protected $fillable = ['goods_name', 'goods_price'];
 }

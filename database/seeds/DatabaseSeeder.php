@@ -55,6 +55,7 @@ class DatabaseSeeder extends Seeder
         });
 
         $this->call(Calendar::class);
+        $this->call(OrderImages::class);
 
     }
 }

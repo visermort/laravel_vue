@@ -9,7 +9,7 @@ class Payment extends Model
     protected $table = 'payments';
     protected $primaryKey = 'id';
 
-    protected $paymentStatuses = [
+    public static $paymentStatuses = [
         0 => 'Not payed',
         1 => 'Payed for',
         2 => 'Return',
@@ -25,4 +25,14 @@ class Payment extends Model
     {
         return $this->paymentStatuses[$this->payment_status];
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function order()
+    {
+        return $this->belongsTo('App\Order', 'payment_order_id', 'id');
+    }
+
+
 }

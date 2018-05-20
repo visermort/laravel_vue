@@ -9,5 +9,6 @@ Homestead.yaml
 /public/js/*
 /public/css/*
 /public/fonts/*
+/public/data-images/*
 /public/mix-manifest.json
 

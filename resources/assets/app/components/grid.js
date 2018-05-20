@@ -1,5 +1,7 @@
 import bus from './bus';
 
+import contentElement from './content.vue';
+
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
@@ -7,10 +9,16 @@ Vue.component('grid-paginate-ajax', {
     template: '#grid-template-ajax',
     props: {
         config: {
-            gridColumns: [],
+            gridColumns: [
+                {'key': 'id', 'value': 'Id'},
+                {'key': 'title', 'value': 'Title',},
+                {'key': 'description', 'value': 'Description', 'sort': false}
+            ],
             requestUrl: '',
-            requestContent: '',
-            requestContentKey: '',
+            requestContent: {
+                url: '',
+                key: ''
+            },
             actions: [ //кнопки действий для каждой строки
             ],
             actionsCommon: [ //кнопки действий для всей таблицы, для выбранных строк
@@ -45,6 +53,11 @@ Vue.component('grid-paginate-ajax', {
             checkedId: [], //массив выбранных checkbox
             idList: [],     //список id - для наполнения предыдущего массива
             localPerPage: 0,
+            contentdata: {
+                key: null,
+                data: {}
+            },
+
         }
     },
     computed: {
@@ -225,8 +238,25 @@ Vue.component('grid-paginate-ajax', {
                 }
             });
         },
-        gridDataClick: function (entry){
-            console.log(entry);
+        gridDataClick: function (key){
+            console.log(key);
+            //this.contentdata.key = key;
+            var that = this;
+            this.doRequest(
+                this.config.requestContent.url+'/'+key,
+                null,
+                function(response){
+                    if (contentElement && response.body) {
+                        //contentElement.props.params = response.body;
+                        //console.log(contentElement.props.params);
+                        that.contentdata.key = key;
+                        that.contentdata.data = response.body;
+                    }
+                },
+                function(){
+                    that.contentdata.key = null;
+                });
+
         }
 
     },

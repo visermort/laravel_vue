@@ -54,6 +54,8 @@ Route::post('/payments/delete', 'PaymentController@delete');
 //datagreed ajax paginate
 Route::get('/payments-paginate', 'PaymentController@indexPaginate');
 Route::get('/payments-data-paginate', 'PaymentController@getDataPaginate');
+Route::get('/payments-data-details/{payment_id}', 'PaymentController@getContentData');
+
 
 //timeline 
 Route::get('/calendar', 'CalendarController@index');

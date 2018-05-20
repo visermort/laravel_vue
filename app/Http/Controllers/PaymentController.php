@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Payment;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use Faker;
 
 class PaymentController extends Controller
 {
@@ -47,7 +48,11 @@ class PaymentController extends Controller
 
         ]);
     }
-    
+
+    /**
+     * больше не используется, запрос от грид первой версии
+     * @return string
+     */
     public function getData()
     {
         $payments = Payment::select('payments.*');
@@ -56,7 +61,12 @@ class PaymentController extends Controller
 
         return json_encode(['payments' => $payments->get()]);
     }
-    
+
+    /**
+     * ответ на тестовый запрос на удаление
+     * @param Request $request
+     * @return string
+     */
     public function delete(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -76,6 +86,10 @@ class PaymentController extends Controller
         }
     }
 
+    /** вывод таблицы
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function indexPaginate(Request $request)
     {
         $config = [];
@@ -113,6 +127,11 @@ class PaymentController extends Controller
         ]);
     }
 
+    /**
+     * данные для таблицы
+     * @param Request $request
+     * @return string
+     */
     public function getDataPaginate(Request $request)
     {
         //$payments = new Payment;
@@ -142,12 +161,40 @@ class PaymentController extends Controller
         ]);
     }
 
+
     public function view($paymentId)
     {
         return [
             'object' => Payment::find($paymentId),
             'template' => 'payment'
         ];
+    }
+
+    /**
+     * данные при клике на платёж - получение информации о платеже
+     * @param $payment_id
+     * @return string
+     */
+    public function getContentData($payment_id)
+    {
+        if (!is_int((int) $payment_id)) {
+            abort(404);
+        }
+        $payment = Payment::find($payment_id);
+        $faker = Faker\Factory::create();
+
+        if ($payment) {
+            return json_encode([
+                'payment' => $payment,
+                'order' => $payment->order,
+                'payments' => $payment->order->payments,
+                'text' => $faker->realText(),
+                'good' => $payment->order->good,
+                'paymentStatuses' => Payment::$paymentStatuses
+            ]);
+        } else {
+            abort(404);
+        }
     }
 
 }

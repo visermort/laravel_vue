@@ -60,47 +60,58 @@
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
-                <tr v-for="entry in gridData">
-                    <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
-                        <input v-if="(config.actionsCommon_disable != '' && entry[config.actionsCommonDisable])"
-                               v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
-                               type="checkbox" class="disabled" >
-                        <input v-else
-                               v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
-                               type="checkbox" v-model="checkedId"
-                               v-bind:value="entry[config.gridColumns[0].key]">
-                        <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
-                    </td>
-                    <td class="grid-data__table-cell-content"
-                        {{--если в конфиге задано, то по клику событие и запрос--}}
-                        v-bind:class="{clickable:config.requestContent}"
-                        v-on:click="(config.requestContent ? gridDataClick(config.requestContentKey ? entry[config.requestContentKey] : null) : null)"
-                        v-for="key in config.gridColumns">
-                        @{{entry[key.key]}}
-                    </td>
-                    <td v-if="config.actions.length">
-                        <ul class="grid-data__table_actions_list" >
-                            <li class="grid-data__table_actions_item" v-for="action in config.actions"  >
-                                <span v-if="(action.disable != null && entry[action.disable])" class="grid-data__table_actions_label"
-                                      v-bind:title="action.title"
-                                      v-html="action.value"
-                                >
-                                </span>
-                                <a  v-else class="grid-data__table_actions_link"
-                                   v-bind:class="{disable: (action.disable == null || entry[action.disable])}"
-                                   href=""
-                                   v-bind:title="action.title"
-                                   {{--третьим аргументом функции передали id таким образом - это первая колонка gridColumns--}}
-                                   v-on:click.prevent="runAction(action.action, action.method, entry[config.gridColumns[0].key], action.message)"
-                                   v-html="action.value"
-                                >
-                                </a>
-                            </li>
-                        </ul>
+                <template v-for="entry in gridData">
+                    <tr>
+                        <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
+                            <input v-if="(config.actionsCommon_disable != '' && entry[config.actionsCommonDisable])"
+                                   v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
+                                   type="checkbox" class="disabled" >
+                            <input v-else
+                                   v-bind:id="entry[config.gridColumns[0].key]+'_checkbox_table_row'"
+                                   type="checkbox" v-model="checkedId"
+                                   v-bind:value="entry[config.gridColumns[0].key]">
+                            <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
+                        </td>
+                        <td class="grid-data__table-cell-content"
+                            {{--если в конфиге задано, то по клику событие и запрос--}}
+                            v-bind:class="{clickable:config.requestContent.url && config.requestContent.key}"
+                            v-on:click="(config.requestContent.url && config.requestContent.key ? gridDataClick(entry[config.requestContent.key]) : null)"
+                            v-for="key in config.gridColumns">
+                            @{{entry[key.key]}}
+                        </td>
+                        <td v-if="config.actions.length">
+                            <ul class="grid-data__table_actions_list" >
+                                <li class="grid-data__table_actions_item" v-for="action in config.actions"  >
+                                    <span v-if="(action.disable != null && entry[action.disable])" class="grid-data__table_actions_label"
+                                          v-bind:title="action.title"
+                                          v-html="action.value"
+                                    >
+                                    </span>
+                                    <a  v-else class="grid-data__table_actions_link"
+                                       v-bind:class="{disable: (action.disable == null || entry[action.disable])}"
+                                       href=""
+                                       v-bind:title="action.title"
+                                       {{--третьим аргументом функции передали id таким образом - это первая колонка gridColumns--}}
+                                       v-on:click.prevent="runAction(action.action, action.method, entry[config.gridColumns[0].key], action.message)"
+                                       v-html="action.value"
+                                    >
+                                    </a>
+                                </li>
+                            </ul>
 
 
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                    <tr v-if="(config.requestContent.url && config.requestContent.key && contentdata.key == entry[config.requestContent.key])">
+                        <td v-bind:colspan="(config.gridColumns.length + (config.actionsCommon.length ? 1 : 0) + (config.actions.length ? 1 : 0))">
+                            <div id="contentElement">
+                                <content-element :contentdata="contentdata">
+
+                                </content-element>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
             </tbody>
         </table>
 
