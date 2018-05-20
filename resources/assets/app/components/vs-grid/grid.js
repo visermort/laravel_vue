@@ -1,11 +1,11 @@
-require('./modal.vue');
+require('./modal.js');
 
 import vsbus from './vsbus';
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
 Vue.component('vs-grid', {
-    template: require('./grid.html'), //'#grid-template-ajax',
+    //template: require('./grid.html'), //'#grid-template-ajax',
     props: {
         config: {
             gridColumns: [

@@ -22,6 +22,7 @@
                                 <a href="?config=3">Change config in backend 3</a>
                             </li>
                         </ul>
+                        <input type="hidden" id="grid-data-form-config"  value="{{ $config or '' }}" >
                     </div>
 
                     <div class="grid" id="grid-vs">
@@ -35,7 +36,7 @@
     </div>
 
     {{--file with component templates--}}
-{{--    @include('templates.grid-paginate');--}}
+    @include('templates.payments');
 
 
 

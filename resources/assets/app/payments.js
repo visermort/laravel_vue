@@ -8,7 +8,7 @@ import contentElement from './components/content/content.js';
 
 
 // экземпляр - грид
-    var GridPaginate = new Vue({
+    let GridPaginate = new Vue({
         el: '#grid-vs',
         data: {
             searchQuery: '',

@@ -28,7 +28,7 @@
     import vsbus from './vsbus';
 
     export default {
-        //name: 'modal_component',
+        //name: 'modal-component',
         props: {
             params: {}
         },
