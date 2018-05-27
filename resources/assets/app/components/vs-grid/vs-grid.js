@@ -1,20 +1,12 @@
 
 import vsbus from './vsbus';
 
-require ('./modal.js');
 
-//import modal from './modal.vue';
-//Vue.component('modal-component', require('./modal.vue'));
-
-//import modal from './modal.js';
-//import contentElement from './content.vue';
+Vue.component('modal-component', require('./modal.vue'));
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
-//export default {
-    //name: 'vs-grid',
 Vue.component('vs-grid', {
-    //template: '#vs-grid-template',
     template: require('./vs-grid.html'),
     props: {
         config: {
@@ -268,9 +260,7 @@ Vue.component('vs-grid', {
                 function () {
                     that.contentdata.key = null;
                 });
-
         }
-
     },
     mounted: function () {
         //внутри функци  метод не виден, поэтому переменная
@@ -290,6 +280,3 @@ Vue.component('vs-grid', {
         }
     }
 });
-//};
-
-

@@ -33,17 +33,6 @@
     </div>
 
 
-
-    <div id="modal">
-        <modal-component
-                v-if="showModal"
-                v-on:close="showModal = false"
-                :params="params">
-        </modal-component>
-    </div>
-
-
-
 @endsection
 
 @section('scripts')

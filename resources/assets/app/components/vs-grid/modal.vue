@@ -1,6 +1,6 @@
 <template>
-    <transition name="modal">
-        <div class="modal-mask" v-on:click="$emit('close')" >
+    <transition name="modal" v-if="showModal" on-close="showModal = false">
+        <div class="modal-mask" v-on:click="modalClose" >
             <div class="modal-wrapper"  >
                 <div class="modal-container modal-form" v-bind:class="modalParams.status" v-on:click.stop >
 
@@ -14,13 +14,12 @@
 
                     <div class="modal-form__footer">
                         <button v-show="modalParams.url" class="btn btn-default modal-form__button" v-on:click="runAction">OK</button>
-                        <button class="modal-form__button btn btn-default" v-on:click="$emit('close')">Close</button>
+                        <button class="modal-form__button btn btn-default" v-on:click="modalClose">Close</button>
                     </div>
                 </div>
             </div>
         </div>
     </transition>
-
 </template>
 
 <script>
@@ -28,14 +27,18 @@
     import vsbus from './vsbus';
 
     export default {
-        //name: 'modal_component',
         props: {
-            params: {}
+        },
+        data: function() {
+            return {
+                params: {
+                },
+                showModal: false
+            }
         },
         methods: {
             runAction: function() {
                 this.modalClose();
-                //console.log(this.modalParams.url, this.modalParams.id);
                 //запрос
                 this.$http.post(this.modalParams.url, {
                     id: this.modalParams.id
@@ -64,8 +67,12 @@
                     'id': 0
                 });
             },
+            showModalWindow: function(data) {
+                this.params = data;
+                this.showModal = true;
+            },
             modalClose: function() {
-                vsbus.$emit('modal_close');
+                this.showModal = false;
             }
         },
         computed: {
@@ -73,14 +80,16 @@
                 return this.params;
             }
         },
-        data: function() {
-            return {
-
-            }
+        mounted: function() {
+            //реакция на событие - вызов модального окна
+            let that = this;
+            vsbus.$on('confirm_action', function(data){
+                //вызываем метод
+                //console.log(data);
+                that.showModalWindow(data);
+            });
         }
-    }
-
-
+  }
 
 </script>
 
