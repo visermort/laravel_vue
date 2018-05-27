@@ -49,7 +49,10 @@ Route::get('/api/payments/{payment_id}', 'PaymentController@view');
 Route::get('/payments', 'PaymentController@index');
 Route::get('/payments-data', 'PaymentController@getData');
 Route::post('/payments/delete', 'PaymentController@delete');
+Route::get('/payments/edit/{payment_id}', 'PaymentController@edit');
 Route::get('/payments-data-details/{payment_id}', 'PaymentController@getContentData');
+Route::post('/payments/export', 'PaymentController@export');
+Route::post('/payments/common-delete', 'PaymentController@commonDelete');
 
 
 //timeline 

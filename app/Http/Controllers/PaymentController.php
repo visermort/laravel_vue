@@ -75,6 +75,27 @@ class PaymentController extends Controller
         }
     }
 
+    /** ответ на тестовый запрос на редактирование
+     * @param $payment_id
+     * @return string
+     */
+    public function edit($payment_id)
+    {
+        return view('service.under_construction');
+    }
+
+    /**
+     * ответ на тестовый запрос на экспорт
+     * @return string
+     */
+    public function export()
+    {
+        return json_encode([
+            'status'=> false,
+            'message' => 'Service under constuction!',
+        ]);
+    }
+
     /**
      * данные для таблицы
      * @param Request $request
