@@ -23,11 +23,8 @@
                         </ul>
                     </div>
 
-                    <div class="demo-grid" id="demoGrid">
-                        <demo-grid
-                                :data="gridData"
-                                :config="config" >
-                        </demo-grid>
+                    <div class="demo-grid" id="vs-grid-id">
+                        <vs-grid :config="config" ></vs-grid>
                     </div>
                 </div>
             </div>
@@ -44,7 +41,7 @@
 
 @section('scripts')
     @parent
-    <script type="text/javascript" src="{{ mix('js/start_grid.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/grid.js') }}"></script>
 @endsection
 
 

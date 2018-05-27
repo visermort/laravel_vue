@@ -123,7 +123,7 @@
     import bus from './bus';
 
     export default {
-        //name: '',
+        //name: 'content-element',
         props: {
             contentdata: {}
         },

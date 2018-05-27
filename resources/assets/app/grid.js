@@ -1,13 +1,20 @@
 
 
+require('./components/vs-grid/vs-grid.js');
+require('./components/modal.js');
+//require('./components/content.js');
+import contentElement from './components/content.vue';
+
+Vue.component('content-element', require('./components/content.vue'));
+
 import bus from './components/bus';
 
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
 
 // экземпляр - грид
-    var GridPaginate = new Vue({
-        el: '#demoGrid',
+    var Grid = new Vue({
+        el: '#vs-grid-id',
         data: {
             searchQuery: '',
             extConfig: '',
@@ -21,7 +28,7 @@ import bus from './components/bus';
                     {'key': 'payment_status', 'value': 'Статус'},
                     {'key': 'created_at', 'value': 'Дата'}
                 ],
-                requestUrl: '/payments-data-paginate',
+                requestUrl: '/payments-data',
                 requestContent: {
                     url: '/payments-data-details',
                     key: 'id'
@@ -65,7 +72,8 @@ import bus from './components/bus';
                     {title:'50', count: 50},
                     {title:'100', count: 100}
                 ],
-                perPage: 25
+                perPage: 25,
+                contentElement: contentElement
             }
         },
         methods: {

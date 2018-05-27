@@ -35,7 +35,7 @@
     </div>
 
     {{--file with component templates--}}
-    @include('templates.grid-paginate');
+    @include('templates.grid');
 
 
 

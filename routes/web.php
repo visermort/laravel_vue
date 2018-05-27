@@ -49,11 +49,6 @@ Route::get('/api/payments/{payment_id}', 'PaymentController@view');
 Route::get('/payments', 'PaymentController@index');
 Route::get('/payments-data', 'PaymentController@getData');
 Route::post('/payments/delete', 'PaymentController@delete');
-
-
-//datagreed ajax paginate
-Route::get('/payments-paginate', 'PaymentController@indexPaginate');
-Route::get('/payments-data-paginate', 'PaymentController@getDataPaginate');
 Route::get('/payments-data-details/{payment_id}', 'PaymentController@getContentData');
 
 

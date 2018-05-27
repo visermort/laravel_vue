@@ -1,12 +1,12 @@
-import bus from './bus';
+import bus from './../bus';
 
-import contentElement from './content.vue';
+//import contentElement from './content.vue';
 
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
-Vue.component('grid-paginate-ajax', {
-    template: '#grid-template-ajax',
+Vue.component('vs-grid', {
+    template: '#vs-grid-template',
     props: {
         config: {
             gridColumns: [
@@ -30,7 +30,8 @@ Vue.component('grid-paginate-ajax', {
                 {title:'50', count: 50},
                 {title:'100', count: 100}
             ],
-            perPage: 25
+            perPage: 25,
+            contentElement: {}
         }
     },
     data: function () {
@@ -246,7 +247,8 @@ Vue.component('grid-paginate-ajax', {
                 this.config.requestContent.url+'/'+key,
                 null,
                 function(response){
-                    if (contentElement && response.body) {
+                    //if (that.contentElement && response.body) {
+                    if (response.body) {
                         //contentElement.props.params = response.body;
                         //console.log(contentElement.props.params);
                         that.contentdata.key = key;
