@@ -44,8 +44,7 @@ Vue.component('vs-grid', {
             }
         });
         return {
-            gridData: Array,
-            paginateData: {},
+            gridData: {},
             sortKey: '',
             sortOrders: sortOrders,
             dataPage: 1,
@@ -66,12 +65,12 @@ Vue.component('vs-grid', {
         paginateButtons: function () {
             let result = [],
                 pageOffset = 2;
-            if (!this.paginateData || !this.paginateData.last_page || this.paginateData.last_page == 0) {
+            if (!this.gridData || !this.gridData.last_page || this.gridData.last_page == 0) {
                 return result;
             } else {
                 let from = this.dataPage - pageOffset > 0 ? this.dataPage - pageOffset : 1,
-                    to = this.dataPage + pageOffset <= this.paginateData.last_page ?
-                        this.dataPage + pageOffset : this.paginateData.last_page;
+                    to = this.dataPage + pageOffset <= this.gridData.last_page ?
+                        this.dataPage + pageOffset : this.gridData.last_page;
                 if (this.dataPage > pageOffset + 1) {
                     result.push({title: '<<', page: 1});
                 }
@@ -81,11 +80,11 @@ Vue.component('vs-grid', {
                 for (let i = from; i <= to; i++) {
                     result.push({title: i, page: i});
                 }
-                if (this.dataPage < this.paginateData.last_page) {
+                if (this.dataPage < this.gridData.last_page) {
                     result.push({title: '>', page: this.dataPage + 1});
                 }
-                if (this.dataPage < this.paginateData.last_page - pageOffset) {
-                    result.push({title: '>>', page: this.paginateData.last_page});
+                if (this.dataPage < this.gridData.last_page - pageOffset) {
+                    result.push({title: '>>', page: this.gridData.last_page});
                 }
             }
             return result;
@@ -170,31 +169,19 @@ Vue.component('vs-grid', {
                 this.config.requestUrl,//url
                 {params: data},//data
                 function (response) {
-                    that.gridData = response.data.payments.data;
+                    that.gridData = response.data.payments;
                     //для селектов очицаем массив и делаем список всех доступных ид
                     that.checkAll = false;
                     that.checkedId = []; //массив выбранных checkbox
                     let idList2 = [];
                     let columns2 = that.config.gridColumns;
                     let actions_common_disable2 = that.config.actions_common_disable;
-                    that.gridData.forEach(function (item) {
+                    that.gridData.data.forEach(function (item) {
                         if (actions_common_disable2 == null || !item[actions_common_disable2]) {
                             idList2.push(item[columns2[0].key]);
                         }
                     });
                     that.idList = idList2;
-
-                    that.paginateData = {
-                        from: response.data.payments.from,
-                        to: response.data.payments.to,
-                        total: response.data.payments.total,
-                        per_page: response.data.payments.per_page,
-                        current_page: response.data.payments.current_page,
-                        last_page: response.data.payments.last_page,
-                        next_page_url: response.data.payments.next_page_url,
-                        prev_page_url: response.data.payments.prev_page_url
-                    };
-
                 },
                 function (error) {
                     that.checkAll = false;
@@ -263,12 +250,12 @@ Vue.component('vs-grid', {
         }
     },
     mounted: function () {
-        //внутри функци  метод не виден, поэтому переменная
-        let func = this.setLocalPerPage;
+        //внутри функци  this не виден, поэтому переменная
+        let that = this;
         //ловим событие
         vsbus.$on('loadconfig', function () {
             console.log('После старта делаем запрос');
-            func();//переписать perPage из конфиг
+            that.setLocalPerPage();//переписать perPage из конфиг
             //в этом месте нужно делать запрос, но поскольку он запускается при изменении localPerPage, запускать специально не нужно
         });
     },

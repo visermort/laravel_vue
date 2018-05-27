@@ -56,7 +56,7 @@
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
-            <template v-for="entry in gridData">
+            <template v-for="entry in gridData.data">
                 <tr>
                     <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
                         <input v-if="(config.actionsCommon_disable != '' && entry[config.actionsCommonDisable])"
@@ -118,8 +118,8 @@
             </div>
             <div class="grid-data__info col-sm-4">
                 <div class="grid-data__info_text">
-                    Elements from {{ paginateData.from }} to {{ paginateData.to }}. All {{ paginateData.total }}.
-                    Page {{ paginateData.current_page }} from {{ paginateData.last_page }}.
+                    Elements from {{ gridData.from }} to {{ gridData.to }}. All {{ gridData.total }}.
+                    Page {{ gridData.current_page }} from {{ gridData.last_page }}.
                 </div>
             </div>
             <div class="grid-data__per_page form-group col-sm-3">
