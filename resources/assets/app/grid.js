@@ -1,16 +1,13 @@
 
-
 require('./components/vs-grid/vs-grid.js');
-require('./components/modal.js');
-//require('./components/content.js');
+
 import contentElement from './components/content.vue';
 
 Vue.component('content-element', require('./components/content.vue'));
 
-import bus from './components/bus';
+import vsbus from './components/vs-grid/vsbus';
 
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
-
 
 // экземпляр - грид
     var Grid = new Vue({
@@ -73,7 +70,7 @@ import bus from './components/bus';
                     {title:'100', count: 100}
                 ],
                 perPage: 25,
-                contentElement: contentElement
+                contentElement: contentElement,
             }
         },
         methods: {
@@ -81,7 +78,7 @@ import bus from './components/bus';
                 //внешняя конфигурация - получается из бека и корректирует поля в instance
                 //например columns, actions, actionCommon - позволяет загрузить одну страницу, но в зависимости 
                 //от реквест корректировать грид
-                var config = document.querySelector('#grid-data-form-config').getAttribute('value');
+                let config = document.querySelector('#grid-data-form-config').getAttribute('value');
                 if (config) {
                     this.extConfig = JSON.parse(config);
                     //console.log(this.extConfig);
@@ -93,7 +90,6 @@ import bus from './components/bus';
                         }
                     }
                 }
-                //console.log(this.config);
             }
 
         },
@@ -101,7 +97,7 @@ import bus from './components/bus';
             console.log('mounted');
             this.correctConfig();//после загрузки страницы корректировка конфигурации
                     //после чего вызываем событие через специально сделанный ради этого экземпляр
-            bus.$emit('loadconfig');
+            vsbus.$emit('loadconfig');
         }
 
     });

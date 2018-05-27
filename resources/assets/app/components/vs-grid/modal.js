@@ -1,11 +1,11 @@
 
-import bus from './bus';
+import vsbus from './vsbus';
 
 //компонент модального окна - однофайловый компонент
 Vue.component('modal-component', require('./modal.vue'));
 
 //экземпляр - модальное окно
-var modal = new Vue({
+let modal = new Vue({
     el: '#modal',
     data: {
         params: {
@@ -32,16 +32,15 @@ var modal = new Vue({
     },
     mounted: function() {
         //реакция на событие - вызов модального окна
-        var func = this.showModalWindow;
-        var funcClose = this.modalClose;
-        bus.$on('confirm_action', function(data){
+        let that = this;
+        vsbus.$on('confirm_action', function(data){
             //вызываем метод
             //console.log(data);
-            func(data);
+            that.showModalWindow(data);
         });
         //закрытие окна
-        bus.$on('modal_close', function() {
-            funcClose();
+        vsbus.$on('modal_close', function() {
+            that.modalClose();
         });
 
     }

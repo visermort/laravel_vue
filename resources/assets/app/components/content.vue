@@ -120,10 +120,9 @@
 
 <script>
 
-    import bus from './bus';
-
     export default {
         //name: 'content-element',
+        name: 'contentelement',
         props: {
             contentdata: {}
         },

@@ -22,6 +22,7 @@
                             </li>
                         </ul>
                     </div>
+                    <input type="hidden" id="grid-data-form-config"  value="{{ $config or '' }}" >
 
                     <div class="demo-grid" id="vs-grid-id">
                         <vs-grid :config="config" ></vs-grid>
@@ -32,8 +33,14 @@
     </div>
 
 
-    {{--file with component templates--}}
-    @include('templates.grid');
+
+    <div id="modal">
+        <modal-component
+                v-if="showModal"
+                v-on:close="showModal = false"
+                :params="params">
+        </modal-component>
+    </div>
 
 
 
