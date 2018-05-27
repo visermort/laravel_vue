@@ -11,9 +11,10 @@ const { mix } = require('laravel-mix');
  |
  */
 
+
 mix.js('resources/assets/js/app.js', 'public/js/vendor.js')
     .sass('resources/assets/sass/app.scss', 'public/css/vendor.css')
-    .sass('resources/assets/css/custom.scss', 'public/css/custom.css')
+    .sass('resources/assets/sass/custom.scss', 'public/css/custom.css')
     .styles('resources/assets/css/timeline.css', 'public/css/timeline.css')
     .js('resources/assets/app/grid.js', 'public/js/grid.js')
     .js('resources/assets/app/app_tree.js', 'public/js/tree.js')
@@ -21,3 +22,4 @@ mix.js('resources/assets/js/app.js', 'public/js/vendor.js')
     .sourceMaps()
     .version();
     //.browserSync('testlaravel.local');
+
