@@ -41,7 +41,7 @@
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
                 <th  v-for="(key, index) in config.gridColumns">
-                    <drop drop="handleDrop(index, ...arguments)">
+                    <drop @drop="handleDrop(index, ...arguments)">
                         <drag class="grid-data__table_head-drag" :transfer-data="{moved: index}" >
                             <a class="grid-data__table_head_link"
                                v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
