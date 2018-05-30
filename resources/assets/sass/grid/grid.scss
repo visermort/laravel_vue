@@ -99,17 +99,31 @@
     &_actions_label {
       color: lightgray;
     }
-    &-cell-checkbox {
-      text-align: center;
-      vertical-align: middle;
+    &-cell {
+      position: relative;
 
-      label {
+      &-checkbox {
+        text-align: center;
         vertical-align: middle;
-        margin: 0;
+
+        label {
+          vertical-align: middle;
+          margin: 0;
+        }
       }
-    }
-    &-cell-content.clickable {
-      cursor: pointer;
+      &-content.clickable {
+        cursor: pointer;
+      }
+      &.loading:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        right: 12px;
+        top: 5px;
+        background: url(/images/loader.gif) no-repeat 50%;
+      }
     }
 
 
@@ -248,4 +262,8 @@ thead input[type="checkbox"] + label {
   list-style-type: none;
 }
 
-@import 'preload';
+//.fade-enter-active, .fade-leave-active {
+//  transition: opacity .1s;
+//}
+
+//@import 'preload';

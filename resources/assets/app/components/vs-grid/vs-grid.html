@@ -23,16 +23,16 @@
                 </ul>
             </div>
         </div>
-        <div class="grid-data__preloader" v-if="loading" id="fountainG">
-            <div id="fountainG_1" class="fountainG"></div>
-            <div id="fountainG_2" class="fountainG"></div>
-            <div id="fountainG_3" class="fountainG"></div>
-            <div id="fountainG_4" class="fountainG"></div>
-            <div id="fountainG_5" class="fountainG"></div>
-            <div id="fountainG_6" class="fountainG"></div>
-            <div id="fountainG_7" class="fountainG"></div>
-            <div id="fountainG_8" class="fountainG"></div>
-        </div>
+        <!--<div class="grid-data__preloader" v-if="loading" id="fountainG">-->
+            <!--<div id="fountainG_1" class="fountainG"></div>-->
+            <!--<div id="fountainG_2" class="fountainG"></div>-->
+            <!--<div id="fountainG_3" class="fountainG"></div>-->
+            <!--<div id="fountainG_4" class="fountainG"></div>-->
+            <!--<div id="fountainG_5" class="fountainG"></div>-->
+            <!--<div id="fountainG_6" class="fountainG"></div>-->
+            <!--<div id="fountainG_7" class="fountainG"></div>-->
+            <!--<div id="fountainG_8" class="fountainG"></div>-->
+        <!--</div>-->
         <!--таблица-->
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
@@ -40,12 +40,12 @@
                 <th class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
-                <th  v-for="(key, index) in config.gridColumns">
+                <th  v-for="(key, index) in config.gridColumns" class="grid-data__table-cell" v-bind:class="{loading: loading[0] == true}">
                     <drop @drop="handleDrop(index, ...arguments)">
-                        <drag class="grid-data__table_head-drag" :transfer-data="{moved: index}" >
+                        <drag class="grid-data__table_head-drag" :transfer-data="{moved: index}">
                             <a class="grid-data__table_head_link"
                                v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
-                               v-bind:class="{ active: sortKey == key.key, disable: key.sort == false }" >
+                               v-bind:class="{ active: sortKey == key.key, disable: key.sort == false}" >
                                 {{ key.value | capitalize }}
                                 <span v-if="key.sort != false" class="arrow" :class="sortOrders[key.key] > 0 ? 'asc' : 'dsc'"> </span>
                             </a>
@@ -68,9 +68,9 @@
                                v-bind:value="entry[config.gridColumns[0].key]">
                         <label v-bind:for="entry[config.gridColumns[0].key]+'_checkbox_table_row'"></label>
                     </td>
-                    <td class="grid-data__table-cell-content"
-                        v-bind:class="{clickable:config.requestContent.url && config.requestContent.key}"
-                        v-on:click="(config.requestContent.url && config.requestContent.key ? gridDataClick(entry[config.requestContent.key]) : null)"
+                    <td class="grid-data__table-cell-content grid-data__table-cell"
+                        v-bind:class="{clickable:config.requestContent.url && config.requestContent.key, loading: loading[entry[config.gridColumns[0].key]]}"
+                        v-on:click="(config.requestContent.url && config.requestContent.key ? gridDataToggle(entry[config.requestContent.key]) : null)"
                         v-for="key in config.gridColumns">
                         {{entry[key.key]}}
                     </td>
@@ -96,13 +96,16 @@
 
                     </td>
                 </tr>
-                <tr v-if="(config.requestContent.url && config.requestContent.key && contentdata.key == entry[config.requestContent.key])">
-                    <td v-bind:colspan="(config.gridColumns.length + (config.actionsCommon.length ? 1 : 0) + (config.actions.length ? 1 : 0))">
-                        <div class="contentElement">
-                            <content-element :contentdata="contentdata"> </content-element>
-                        </div>
-                    </td>
-                </tr>
+                <transition name="fade" v-if="(config.requestContent.url && config.requestContent.key && contentdata.key == entry[config.requestContent.key])">
+                    <tr >
+                        <td v-bind:colspan="(config.gridColumns.length + (config.actionsCommon.length ? 1 : 0) + (config.actions.length ? 1 : 0))">
+                            <div class="contentElement">
+                                <content-element :contentdata="contentdata"> </content-element>
+                            </div>
+                        </td>
+                    </tr>
+                </transition>
+
             </template>
             </tbody>
         </table>

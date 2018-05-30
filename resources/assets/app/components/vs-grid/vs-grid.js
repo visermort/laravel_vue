@@ -49,7 +49,7 @@ Vue.component('vs-grid', {
             sortOrders: sortOrders,
             dataPage: 1,
             searchQuery: '',
-            loading: false,
+            loading: [],
             checkAll: false,//выбраны все checkbox
             checkedId: [], //массив выбранных checkbox
             idList: [],     //список id - для наполнения предыдущего массива
@@ -167,7 +167,7 @@ Vue.component('vs-grid', {
 
             this.doRequest(
                 this.config.requestUrl,//url
-                {params: data},//data
+                {params: data, loading: 0},//data
                 function (response) {
                     that.gridData = response.data.payments;
                     //для селектов очицаем массив и делаем список всех доступных ид
@@ -214,19 +214,32 @@ Vue.component('vs-grid', {
 
         doRequest: function (url, data, callback, fail) {
             let that = this;
-            that.loading = true;
+            that.loading = [];
+
+            if (data && data.loading !== null) {
+                that.loading[data.loading] = true;
+            }
             //запрос
             this.$http.get(url, data).then(function (response) {
-                that.loading = false;
+                that.loading = [];
                 console.log(response);
                 callback(response);
             }).catch(function (error) {
-                that.loading = false;
+                that.loading = [];
                 console.log(error);
                 if (fail) {
                     fail(error);
                 }
             });
+        },
+        gridDataToggle: function(key) {
+            if (this.contentdata.key !== key) {
+                this.gridDataClick(key);
+            } else {
+                this.contentdata.key = null;
+                this.contentdata.data = null;
+            }
+
         },
         gridDataClick: function (key) {
             console.log(key);
@@ -234,7 +247,7 @@ Vue.component('vs-grid', {
             let that = this;
             this.doRequest(
                 this.config.requestContent.url + '/' + key,
-                null,
+                {loading: key}, //для прелоадера
                 function (response) {
                     //if (that.contentElement && response.body) {
                     if (response.body) {
