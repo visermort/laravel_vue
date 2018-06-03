@@ -4,41 +4,41 @@
 .good_item {
     list-style-type: none;
 }
-
 /*tree*/
-.tree-item {
-    cursor: pointer;
-    line-height: 1.5em;
-    list-style-type: none;
-    &__node {
-        display: block;
-        width: 18px;
-        height: 18px;
-        background-image: url(../img/arrow_right.png);
-        float: left;
-        margin-top: 4px;
-        &.open {
-            background-image: url(../img/arrow_expanded.png);
-        }
-        &.document {
-            background-image: url(../img/document.gif);
-            cursor: default;
-        }
-        &.loading {
-            background-image: url(../img/loader.gif);
-            cursor: default;
-        }
-    }
-    &__title {
-        display: block;
-        line-height: 1.8;
-        padding-left: 20px;
-    }
-    &__list {
-        padding-left: 2em;
-    }
+//.tree-item {
+//    cursor: pointer;
+//    line-height: 1.5em;
+//    list-style-type: none;
+//    &__node {
+//        display: block;
+//        width: 18px;
+//        height: 18px;
+//        background-image: url(../img/arrow_right.png);
+//        float: left;
+//        margin-top: 4px;
+//        &.open {
+//            background-image: url(../img/arrow_expanded.png);
+//        }
+//        &.document {
+//            background-image: url(../img/document.gif);
+//            cursor: default;
+//        }
+//        &.loading {
+//            background-image: url(../img/loader.gif);
+//            cursor: default;
+//        }
+//    }
+//    &__title {
+//        display: block;
+//        line-height: 1.8;
+//        padding-left: 20px;
+//    }
+//    &__list {
+//        padding-left: 2em;
+//    }
+//
+//
+//}
 
-
-}
-@import 'grid/grid';
-@import 'grid/preload';
+//@import 'grid/grid';
+//@import 'grid/preload';

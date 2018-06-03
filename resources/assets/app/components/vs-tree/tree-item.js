@@ -3,6 +3,7 @@ import treebus from './treebus';
 // define the item component
 Vue.component('tree-item', {
     template: require('./tree-item.html'),
+    //style: require('./tree.css'),
     props: {
         model: Object
     },

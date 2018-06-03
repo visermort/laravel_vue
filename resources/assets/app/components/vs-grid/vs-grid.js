@@ -8,6 +8,7 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAt
 
 Vue.component('vs-grid', {
     template: require('./vs-grid.html'),
+    style: require('./grid.css'),
     props: {
         config: {
             gridColumns: [

@@ -23,3 +23,5 @@ mix.js('resources/assets/js/app.js', 'public/js/vendor.js')
     .version();
     //.browserSync('testlaravel.local');
 
+
+
