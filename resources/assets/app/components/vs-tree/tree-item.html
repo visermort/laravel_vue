@@ -1,0 +1,14 @@
+<li class="tree-item">
+    <div class="tree_item__head">
+        <div class="tree-item__node" v-bind:class="nodeClass"   v-on:click="toggle"></div>
+        <div class="tree-item__title">
+            <a  v-if="model.href" v-bind:href="model.href" v-on:click.prevent="getObject(model.href)">
+                {{model.id}}. {{model.title}}
+            </a>
+            <span v-else class="tree-item__title">{{model.id}}. {{model.title}}</span>
+        </div>
+    </div>
+    <ul class="tree-item__list" v-show="status == 'open'">
+        <tree-item class="tree-item" v-for="modelchilds in childData" :model="modelchilds"> </tree-item>
+    </ul>
+</li>

@@ -17,7 +17,7 @@ mix.js('resources/assets/js/app.js', 'public/js/vendor.js')
     .sass('resources/assets/sass/custom.scss', 'public/css/custom.css')
     .styles('resources/assets/css/timeline.css', 'public/css/timeline.css')
     .js('resources/assets/app/grid.js', 'public/js/grid.js')
-    .js('resources/assets/app/app_tree.js', 'public/js/tree.js')
+    .js('resources/assets/app/tree.js', 'public/js/tree.js')
     .js('resources/assets/app/calendar.js', 'public/js/calendar.js')
     .sourceMaps()
     .version();

@@ -51,22 +51,13 @@ class GoodController extends Controller
     }
 
     /**
-     * дерево первый способ
+     * дерево открывается страница
      * @return mixed
+     *
      */
     public function startTree()
     {
         return view('goods.tree');
-    }
-
-    /**
-     * дерево второй способ - открывается страница
-     * @return mixed
-     *
-     */
-    public function startTree2()
-    {
-        return view('goods.tree2');
     }
 
     /**

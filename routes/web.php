@@ -32,11 +32,11 @@ Route::post('/api/goods/add', 'GoodController@store');
 Route::get('/orders/{good_id}', 'GoodController@orders');
 
 
-Route::get('/tree', 'GoodController@startTree');
+//Route::get('/tree', 'GoodController@startTree');
 
 
 //дерево - второй способ
-Route::get('/tree2', 'GoodController@startTree2');
+Route::get('/tree', 'GoodController@startTree');
 Route::get('/api/goods2', 'GoodController@get2');
 Route::get('/api/orders2/{good_id}', 'GoodController@orders2');
 Route::get('/api/payment/{order_id}', 'GoodController@payment');
