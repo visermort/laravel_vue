@@ -175,7 +175,7 @@
 
 <script>
 
-    import treebus from './vs-tree/treebus';
+    import treebus from './../treebus';
 
     export default {
         //name: 'content-element',

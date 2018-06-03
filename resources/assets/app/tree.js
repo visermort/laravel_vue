@@ -1,6 +1,6 @@
 
 
-Vue.component('treecontent', require('./components/tree-content.vue'));
+Vue.component('treecontent', require('./components/vs-tree/sample-content/tree-content.vue'));
 Vue.component('vs-tree', require('./components/vs-tree/tree.vue'));
 
 let treecontent = new Vue ({

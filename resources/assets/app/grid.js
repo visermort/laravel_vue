@@ -1,20 +1,25 @@
+Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
+
+import VueDragDrop from 'vue-drag-drop';
+
+Vue.use(VueDragDrop);
+
 
 require('./components/vs-grid/vs-grid.js');
 
-import contentElement from './components/content.vue';
+import contentElement from './components/vs-grid/sample-content/content.vue';
 
-Vue.component('content-element', require('./components/content.vue'));
+Vue.component('content-element', require('./components/vs-grid/sample-content/content.vue'));
 
 import vsbus from './components/vs-grid/vsbus';
 
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
 // экземпляр - грид
-    var Grid = new Vue({
+    let Grid = new Vue({
         el: '#vs-grid-id',
         data: {
             searchQuery: '',
-            extConfig: '',
             config: {
                 gridColumns: [
                     {'key': 'id', 'value': 'Id'},
@@ -80,15 +85,8 @@ import vsbus from './components/vs-grid/vsbus';
                 //от реквест корректировать грид
                 let config = document.querySelector('#grid-data-form-config').getAttribute('value');
                 if (config) {
-                    this.extConfig = JSON.parse(config);
-                    //console.log(this.extConfig);
-                    for (var item in this.extConfig) {
-                        //console.log(item, this.extConfig[item]);
-                        //console.log(this.config[item]);
-                        if (this.config[item]) {
-                            this.config[item] = this.extConfig[item];
-                        }
-                    }
+                    config = JSON.parse(config);
+                    this.config = Object.assign(this.config, config);
                 }
             }
 

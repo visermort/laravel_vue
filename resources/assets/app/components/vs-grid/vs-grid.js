@@ -4,8 +4,6 @@ import vsbus from './vsbus';
 
 Vue.component('modal-component', require('./modal.vue'));
 
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
-
 Vue.component('vs-grid', {
     template: require('./vs-grid.html'),
     style: require('./grid.css'),
