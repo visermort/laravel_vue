@@ -1,8 +1,8 @@
 Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
 
-import VueDragDrop from 'vue-drag-drop';
+//import VueDragDrop from 'vue-drag-drop';
 
-Vue.use(VueDragDrop);
+//Vue.use(VueDragDrop);
 
 
 require('./components/vs-grid/vs-grid.js');
@@ -25,7 +25,7 @@ import vsbus from './components/vs-grid/vsbus';
                     {'key': 'id', 'value': 'Id'},
                     {'key': 'payment_order_id', 'value': 'Order Id', 'sort': false},
                     {'key': 'payment_summ', 'value': 'Сумма'},
-                    {'key': 'payment_client_name', 'value': 'Клиент'},
+                    {'key': 'payment_client_name', 'value': 'Клиент', 'search': false},
                     {'key': 'payment_client_phone', 'value': 'Телефон'},
                     {'key': 'payment_status', 'value': 'Статус'},
                     {'key': 'created_at', 'value': 'Дата'}

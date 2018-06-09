@@ -1,18 +1,7 @@
 
     <div class="grid-data" id="grig-data">
         <div class="grid-data__header clearfix">
-            <div class="grid-data__search_form col-sm-6" >
-                <div class="col-sm-2">
-                    <label for="form-search-input-query">Search</label>
-                </div>
-                <div class="col-sm-8">
-                    <input id="form-search-input-query" class="grid-data__search_input form-control" name="query" v-model="searchQuery" >
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-default grid-data__search_button" v-on:click.prevent="makeSeach()" href="#" >Search</button>
-                </div>
-            </div>
-            <div class="grid-data__tools col-sm-6">
+            <div class="grid-data__tools col-sm-12">
                 <ul class="grid-data__tools_list "  v-if="config.actionsCommon.length">
                     <li class="grid-data__tools_item"
                         v-for="action in config.actionsCommon"
@@ -23,16 +12,6 @@
                 </ul>
             </div>
         </div>
-        <!--<div class="grid-data__preloader" v-if="loading" id="fountainG">-->
-            <!--<div id="fountainG_1" class="fountainG"></div>-->
-            <!--<div id="fountainG_2" class="fountainG"></div>-->
-            <!--<div id="fountainG_3" class="fountainG"></div>-->
-            <!--<div id="fountainG_4" class="fountainG"></div>-->
-            <!--<div id="fountainG_5" class="fountainG"></div>-->
-            <!--<div id="fountainG_6" class="fountainG"></div>-->
-            <!--<div id="fountainG_7" class="fountainG"></div>-->
-            <!--<div id="fountainG_8" class="fountainG"></div>-->
-        <!--</div>-->
         <!--таблица-->
         <table class="grid-data__table">
             <thead class="grid-data__table_head">
@@ -41,7 +20,7 @@
                     <input id="checkbox-table-header" type="checkbox" v-on:click="headerCheckClick" v-model="checkAll" ><label for="checkbox-table-header"></label>
                 </th>
                 <th  v-for="(key, index) in config.gridColumns" class="grid-data__table-cell" v-bind:class="{loading: loading[0] == true}">
-                    <drop @drop="handleDrop(index, ...arguments)">
+                     <drop @drop="handleDrop(index, ...arguments)">
                         <drag class="grid-data__table_head-drag" :transfer-data="{moved: index}">
                             <a class="grid-data__table_head_link"
                                v-on:click="(key.sort == null || key.sort != false ?  sortBy(key.key) : null)"
@@ -56,6 +35,14 @@
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
+            <tr v-if="searchItems" class="grid-data__table_search">
+                <td v-if="config.actionsCommon.length" ></td>
+                <td  v-for="(key, index) in config.gridColumns" >
+                    <input v-if="key.search != false" class="grid-data__table_search-input" type="text"
+                           v-bind:value="key.search" v-model="searchQuery[key.key]" @keyup.enter="makeSearch()">
+                </td>
+                <td class="grid-data__table_head_actions" v-if="config.actions.length"></td>
+            </tr>
             <template v-for="entry in gridData.data">
                 <tr>
                     <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">

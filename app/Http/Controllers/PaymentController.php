@@ -111,11 +111,9 @@ class PaymentController extends Controller
         $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
         $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
         if ($request->has('search')) {
-            $payments = $payments->where('id', 'like', '%'.$request->get('search').'%');
-            $payments = $payments->orWhere('payment_order_id', 'like', $request->get('search').'%');
-            $payments = $payments->orWhere('payment_summ', 'like', $request->get('search').'%');
-            $payments = $payments->orWhere('payment_client_name', 'like', $request->get('search').'%');
-            $payments = $payments->orWhere('payment_client_phone', 'like', $request->get('search').'%');
+            foreach ($request->get('search') as $key => $value) {
+                $payments->where($key, 'like', '%' . $value . '%');
+            }
         }
 
         if ($request->has('sort')) {

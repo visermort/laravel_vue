@@ -1,6 +1,9 @@
 
 import vsbus from './vsbus';
 
+import VueDragDrop from 'vue-drag-drop';
+Vue.use(VueDragDrop);
+
 
 Vue.component('modal-component', require('./modal.vue'));
 
@@ -10,8 +13,8 @@ Vue.component('vs-grid', {
     props: {
         config: {
             gridColumns: [
-                {'key': 'id', 'value': 'Id'},
-                {'key': 'title', 'value': 'Title',},
+                {'key': 'id', 'value': 'Id', 'search': false},
+                {'key': 'title', 'value': 'Title'}, //serchMethod like = > <
                 {'key': 'description', 'value': 'Description', 'sort': false}
             ],
             requestUrl: '',
@@ -47,7 +50,7 @@ Vue.component('vs-grid', {
             sortKey: '',
             sortOrders: sortOrders,
             dataPage: 1,
-            searchQuery: '',
+            searchQuery: {},
             loading: [],
             checkAll: false,//выбраны все checkbox
             checkedId: [], //массив выбранных checkbox
@@ -87,7 +90,14 @@ Vue.component('vs-grid', {
                 }
             }
             return result;
-        }
+        },
+        searchItems: function() {
+            for (let i=0; i<this.config.gridColumns.length; i++) {
+                if (this.config.gridColumns[i] !== false) {
+                    return true;
+                }
+            }
+        },
     },
     filters: {
         capitalize: function (str) {
@@ -188,10 +198,19 @@ Vue.component('vs-grid', {
                     that.idList = [];
                 });
         },
-        makeSeach: function () {
+        makeSearch: function () {
             this.dataPage = 1;
             this.getRequest();
         },
+        // search(key) {
+        //     console.log(key.key, key.searchValue);
+        //     this.searchQuery = key.searchValue;
+        //     this.searchKey = key.key;
+        //     this.dataPage = 1;
+        //     this.getRequest();
+        //     this.searchQuery = '';
+        //     this.searchKey = '';
+        // },
         headerCheckClick: function () {
             this.checkedId = [];
             if (this.checkAll) {

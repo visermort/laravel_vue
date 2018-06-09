@@ -33,6 +33,21 @@
     user-select: none;
     padding: 0;
 }
+.grid-data__table_search td {
+    padding: 0;
+}
+.grid-data__table_search-input {
+    width: 100%;
+    display: block;
+    height: 28px;
+    border: 1px solid #ccd0d2;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border-color ease-in-out 0.15s, box-shadow;
+    outline: none !important;
+    padding: 6px 12px;
+}
+
 
 .grid-data__table_head th.grid-data__table_head_actions {
     padding: 10px;
