@@ -38,8 +38,18 @@
             <tr v-if="searchItems" class="grid-data__table_search">
                 <td v-if="config.actionsCommon.length" ></td>
                 <td  v-for="(key, index) in config.gridColumns" >
-                    <input v-if="key.search != false" class="grid-data__table_search-input" type="text"
-                           v-bind:value="key.search" v-model="searchQuery[key.key]" @keyup.enter="makeSearch()">
+                    <template v-if="key.search != false">
+                        <v2-datepicker-range lang="en" format="yyyy-MM-DD" placeholder=" "
+                                v-if="key.filter == 'date-range'"
+                                v-model="searchQuery[key.key]"
+                                v-on:change="makeSearch"
+                                :picker-options="pickerOptions"/>
+                        <input v-else
+                           class="grid-data__table_search-input"
+                           type="text"
+                           v-model="searchQuery[key.key]"
+                               @keyup.enter="makeSearch">
+                    </template>
                 </td>
                 <td class="grid-data__table_head_actions" v-if="config.actions.length"></td>
             </tr>

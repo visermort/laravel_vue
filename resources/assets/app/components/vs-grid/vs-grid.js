@@ -1,9 +1,13 @@
 
 import vsbus from './vsbus';
 
+let moment = require('moment');
+
 import VueDragDrop from 'vue-drag-drop';
 Vue.use(VueDragDrop);
 
+require('./datepicker.js');
+import {pickerOptions} from './datepicker';
 
 Vue.component('modal-component', require('./modal.vue'));
 
@@ -14,8 +18,9 @@ Vue.component('vs-grid', {
         config: {
             gridColumns: [
                 {'key': 'id', 'value': 'Id', 'search': false},
-                {'key': 'title', 'value': 'Title'}, //serchMethod like = > <
-                {'key': 'description', 'value': 'Description', 'sort': false}
+                {'key': 'title', 'value': 'Title'},
+                {'key': 'description', 'value': 'Description', 'sort': false},
+                {'key': 'created_at', 'value': 'Дата', 'filter': 'date-range'}
             ],
             requestUrl: '',
             requestContent: {
@@ -60,8 +65,8 @@ Vue.component('vs-grid', {
                 key: null,
                 data: {}
             },
-
-        }
+            pickerOptions: pickerOptions,
+        };
     },
     computed: {
         paginateButtons: function () {
@@ -166,11 +171,21 @@ Vue.component('vs-grid', {
                 data.dir = this.sortOrders[this.sortKey];
             }
             if (this.searchQuery) {
-                data.search = this.searchQuery;
+                let query = {};
+                for (let key in this.searchQuery) {
+                    if (typeof this.searchQuery[key] == 'number' || typeof this.searchQuery[key] == 'string') {
+                        query[key] = this.searchQuery[key];
+                    } else if (Array.isArray(this.searchQuery[key])) {
+                        query[key] = moment(this.searchQuery[key][0]).format('YYYY-MM-DD HH:mm:ss')+' - '+
+                            moment(this.searchQuery[key][1]).format('YYYY-MM-DD HH:mm:ss');
+                    }
+                }
+                console.log(query);
+                data.search = query;
             }
             if (this.localPerPage > 0) {
                 data.per_page = this.localPerPage;
-                console.log('perpage ' + data.per_page);
+                //console.log('perpage ' + data.per_page);
             }
             let that = this;
 
@@ -202,15 +217,16 @@ Vue.component('vs-grid', {
             this.dataPage = 1;
             this.getRequest();
         },
-        // search(key) {
-        //     console.log(key.key, key.searchValue);
-        //     this.searchQuery = key.searchValue;
-        //     this.searchKey = key.key;
-        //     this.dataPage = 1;
-        //     this.getRequest();
-        //     this.searchQuery = '';
-        //     this.searchKey = '';
-        // },
+        changeSearchDate(key) {
+            console.log(key, this);
+        },
+        getSearchMethod(key){
+            for (let i = 0; i < this.config.gridColumns.length; i++){
+                if (this.config.gridColumns[i].key === key) {
+                    return this.config.gridColumns[i].search_method ? this.config.gridColumns[i].search_method : null;
+                }
+            }
+        },
         headerCheckClick: function () {
             this.checkedId = [];
             if (this.checkAll) {
@@ -238,6 +254,7 @@ Vue.component('vs-grid', {
                 that.loading[data.loading] = true;
             }
             //запрос
+            console.log(data);
             this.$http.get(url, data).then(function (response) {
                 that.loading = [];
                 console.log(response);
@@ -298,3 +315,4 @@ Vue.component('vs-grid', {
         }
     }
 });
+

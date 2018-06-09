@@ -111,8 +111,13 @@ class PaymentController extends Controller
         $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
         $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
         if ($request->has('search')) {
-            foreach ($request->get('search') as $key => $value) {
-                $payments->where($key, 'like', '%' . $value . '%');
+            foreach ($request->get('search') as $key => $item) {
+                if (strpos($item, ' - ')) {
+                    $itemArray = explode(' - ', $item);
+                    $payments->whereBetween($key, $itemArray);
+                } else {
+                    $payments->where($key, 'like', '%' . $item . '%');
+                }
             }
         }
 
@@ -122,6 +127,7 @@ class PaymentController extends Controller
         }
         return json_encode([
             'sql' => $payments->toSql(),
+            'bindings' => $payments->getBindings(),
             'payments' => $payments->paginate($perPage),
             'request' => $request->all(),
 
