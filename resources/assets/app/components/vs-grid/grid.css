@@ -132,6 +132,13 @@
     display: inline-block;
     margin-left: 5px;
 }
+.grid-data__table_actions_link {
+    /*color: #42b983;*/
+    color: #399164;
+}
+.grid-data__table_actions_link:hover {
+    color: #2e6e4b;
+}
 
 .grid-data__table_actions_label {
     color: lightgray;
@@ -239,13 +246,25 @@
 .grid-data__tools_item {
     list-style-type: none;
     display: inline-block;
-    padding: 15px;
+    padding: 5px 15px;
     cursor: pointer;
+    border-radius: 3px;
+    border: 1px solid #ccd0d2;
+    text-align: center;
+    text-decoration: none;
+    /*color: lightgrey;*/
+    /*color: #444;*/
+    /*color: #42b983;*/
+    color: #399164;
 }
 
 .grid-data__tools_item:hover {
+    /*background-color: #d3e0e9;*/
+    /*color: #2668ba;*/
+    border-color: #42b983;
+    /*color: #444;*/
+    /*color: #42b983;*/
     background-color: #d3e0e9;
-    color: #2668ba;
 }
 
 .grid-data__info_text {
