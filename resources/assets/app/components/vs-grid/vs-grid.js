@@ -17,10 +17,10 @@ Vue.component('vs-grid', {
     props: {
         config: {
             gridColumns: [
-                {'key': 'id', 'value': 'Id', 'search': false},
+                {'key': 'id', 'value': 'Id', 'search_method': 'equal'},
                 {'key': 'title', 'value': 'Title'},
                 {'key': 'description', 'value': 'Description', 'sort': false},
-                {'key': 'created_at', 'value': 'Дата', 'filter': 'date-range'}
+                {'key': 'created_at', 'value': 'Дата', 'filter': 'date-range', 'search_method': 'between'}
             ],
             requestUrl: '',
             requestContent: {
@@ -102,7 +102,7 @@ Vue.component('vs-grid', {
                     return true;
                 }
             }
-        },
+        }
     },
     filters: {
         capitalize: function (str) {
@@ -173,7 +173,8 @@ Vue.component('vs-grid', {
             if (this.searchQuery) {
                 let query = {};
                 for (let key in this.searchQuery) {
-                    if (typeof this.searchQuery[key] == 'number' || typeof this.searchQuery[key] == 'string') {
+                    if ((typeof this.searchQuery[key] === 'number' || typeof this.searchQuery[key] === 'string') &&
+                        this.searchQuery[key] > "")  {
                         query[key] = this.searchQuery[key];
                     } else if (Array.isArray(this.searchQuery[key])) {
                         query[key] = moment(this.searchQuery[key][0]).format('YYYY-MM-DD HH:mm:ss')+' - '+
@@ -187,6 +188,7 @@ Vue.component('vs-grid', {
                 data.per_page = this.localPerPage;
                 //console.log('perpage ' + data.per_page);
             }
+            data.search_methods = this.searchMethods();
             let that = this;
 
             this.doRequest(
@@ -220,12 +222,15 @@ Vue.component('vs-grid', {
         changeSearchDate(key) {
             console.log(key, this);
         },
-        getSearchMethod(key){
-            for (let i = 0; i < this.config.gridColumns.length; i++){
-                if (this.config.gridColumns[i].key === key) {
-                    return this.config.gridColumns[i].search_method ? this.config.gridColumns[i].search_method : null;
+        searchMethods: function() {
+            let result = {};
+            for (let i=0; i<this.config.gridColumns.length; i++) {
+                if (this.config.gridColumns[i].search_method) {
+                    result[this.config.gridColumns[i].key] = this.config.gridColumns[i].search_method;
                 }
             }
+            console.log(result);
+            return result !== {} ? result : null;
         },
         headerCheckClick: function () {
             this.checkedId = [];

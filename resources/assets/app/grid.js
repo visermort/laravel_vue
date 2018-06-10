@@ -10,20 +10,20 @@ import vsbus from './components/vs-grid/vsbus';
 
     //Vue.prototype.$http = axios; при переходе на аксиос можно так
 
-// экземпляр - грид
+// Grid instance
     let Grid = new Vue({
         el: '#vs-grid-id',
         data: {
             searchQuery: '',
             config: {
                 gridColumns: [
-                    {'key': 'id', 'value': 'Id'},
-                    {'key': 'payment_order_id', 'value': 'Order Id', 'sort': false, },
+                    {'key': 'id', 'value': 'Id', 'search_method': 'equal'},
+                    {'key': 'payment_order_id', 'value': 'Order Id', 'sort': false, 'search_method': 'equal'},
                     {'key': 'payment_summ', 'value': 'Сумма'},
                     {'key': 'payment_client_name', 'value': 'Клиент'},//'search':false
                     {'key': 'payment_client_phone', 'value': 'Телефон'},
-                    {'key': 'payment_status', 'value': 'Статус'},
-                    {'key': 'created_at', 'value': 'Дата', 'filter': 'date-range'}
+                    {'key': 'payment_status', 'value': 'Статус', 'filter': {'0': 'Waiting', '1': 'Revoked', '2': 'Payed'}, 'search_method': 'equal'},
+                    {'key': 'created_at', 'value': 'Дата', 'filter': 'date-range', 'search_method': 'between'}
                 ],
                 requestUrl: '/payments-data',
                 requestContent: {

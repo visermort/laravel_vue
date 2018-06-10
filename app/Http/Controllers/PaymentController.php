@@ -110,11 +110,15 @@ class PaymentController extends Controller
         $payments = Payment::select('payments.*');
         $payments->addSelect(DB::raw('(`id` % 3 = 0) as disable_delete'));//доступно ли удаление - для примера
         $payments->addSelect(DB::raw('(`id` % 5 = 0) as check_box_disable'));//доступен ли checkbox
+        $searchMethods = $request->has('search_methods') ? $request->get('search_methods') : false;
         if ($request->has('search')) {
             foreach ($request->get('search') as $key => $item) {
-                if (strpos($item, ' - ')) {
+                $searchMethod = $searchMethods && isset($searchMethods[$key]) ? $searchMethods[$key] : '';
+                if ($searchMethod == 'between') {
                     $itemArray = explode(' - ', $item);
                     $payments->whereBetween($key, $itemArray);
+                } elseif ($searchMethod == 'equal') {
+                    $payments->where($key, '=', $item);
                 } else {
                     $payments->where($key, 'like', '%' . $item . '%');
                 }

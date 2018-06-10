@@ -14,6 +14,7 @@
         </div>
         <!--таблица-->
         <table class="grid-data__table">
+            <!--шапка-->
             <thead class="grid-data__table_head">
             <tr>
                 <th class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
@@ -35,6 +36,7 @@
             </tr>
             </thead>
             <tbody class="grid-data__table_body">
+            <!--фильтры-->
             <tr v-if="searchItems" class="grid-data__table_search">
                 <td v-if="config.actionsCommon.length" ></td>
                 <td  v-for="(key, index) in config.gridColumns" >
@@ -44,6 +46,13 @@
                                 v-model="searchQuery[key.key]"
                                 v-on:change="makeSearch"
                                 :picker-options="pickerOptions"/>
+                        <select v-else-if="typeof (key.filter) === 'object'"
+                                class="grid-data__table_search-input"
+                                v-model="searchQuery[key.key]"
+                                @change="makeSearch" >
+                            <option value=""></option>
+                            <option v-for="(option, option_key) in key.filter" v-bind:value="(option_key)">{{ option}}</option>
+                        </select>
                         <input v-else
                            class="grid-data__table_search-input"
                            type="text"
@@ -53,6 +62,7 @@
                 </td>
                 <td class="grid-data__table_head_actions" v-if="config.actions.length"></td>
             </tr>
+            <!--данные-->
             <template v-for="entry in gridData.data">
                 <tr>
                     <td class="grid-data__table-cell-checkbox" v-if="config.actionsCommon.length">
