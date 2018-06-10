@@ -195,19 +195,23 @@ Vue.component('vs-grid', {
                 this.config.requestUrl,//url
                 {params: data, loading: 0},//data
                 function (response) {
-                    that.gridData = response.data.payments;
+                    if (response.data) {
+                        that.gridData = response.data.payments;
+                        let idList2 = [];
+                        let columns2 = that.config.gridColumns;
+                        let actions_common_disable2 = that.config.actions_common_disable;
+                        that.gridData.data.forEach(function (item) {
+                            if (actions_common_disable2 == null || !item[actions_common_disable2]) {
+                                idList2.push(item[columns2[0].key]);
+                            }
+                        });
+                        that.idList = idList2;
+                    } else {
+                        that.idList = [];
+                    }
                     //для селектов очицаем массив и делаем список всех доступных ид
                     that.checkAll = false;
                     that.checkedId = []; //массив выбранных checkbox
-                    let idList2 = [];
-                    let columns2 = that.config.gridColumns;
-                    let actions_common_disable2 = that.config.actions_common_disable;
-                    that.gridData.data.forEach(function (item) {
-                        if (actions_common_disable2 == null || !item[actions_common_disable2]) {
-                            idList2.push(item[columns2[0].key]);
-                        }
-                    });
-                    that.idList = idList2;
                 },
                 function (error) {
                     that.checkAll = false;
