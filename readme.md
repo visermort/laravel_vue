@@ -2,7 +2,8 @@
 
 ## Test Vue project.
 
-#### Lazy load tree. Grid with paginate, sort, search, details view by Ajax (configuration can be changed from backend).
+#### Lazy load tree.
+#### Grid with paginate, sort, search, item details view by Ajax, columns drag & drop (configuration can be changed from backend).
 
 [Live demo](http://laravelvue.visermort.ru/)
 
