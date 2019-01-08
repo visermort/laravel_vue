@@ -60,6 +60,13 @@
                 </div>
             </div>
         </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <a target="_blank" href="https://github.com/visermort/laravel_vue">See project on Github</a>
+                </div>
+            </div>
+        </div>
 
         @yield('content')
 

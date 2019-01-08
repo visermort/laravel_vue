@@ -1,7 +1,7 @@
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-## Test project Vue
+## Test Vue project.
 
-#### Lazy load tree. Grid with paginate, sort, seach. Grid with paginate, sort, search by Ajax.
+#### Lazy load tree. Grid with paginate, sort, search, details view by Ajax (configuration can be changed from backend).
 
 ![Vue logo](/resources/assets/images/vue.png)
