@@ -41,16 +41,16 @@ Route::get('/api/goods2', 'GoodController@get2');
 Route::get('/api/orders2/{good_id}', 'GoodController@orders2');
 Route::get('/api/payment/{order_id}', 'GoodController@payment');
 //дерево - вывод объектов
-Route::get('/api/good/{good_id}', 'GoodController@view');
-Route::get('/api/order/{order_id}', 'GoodController@orderView');
-Route::get('/api/payments/{payment_id}', 'PaymentController@view');
+Route::get('/api/good/{good_id}', 'GoodController@view')->where('good_id', '[0-9]+');
+Route::get('/api/order/{order_id}', 'GoodController@orderView')->where('order_id', '[0-9]+');
+Route::get('/api/payments/{payment_id}', 'PaymentController@view')->where('payment_id', '[0-9]+');
 
 //datagreed
 Route::get('/payments', 'PaymentController@index');
 Route::get('/payments-data', 'PaymentController@getData');
 Route::post('/payments/delete', 'PaymentController@delete');
-Route::get('/payments/edit/{payment_id}', 'PaymentController@edit');
-Route::get('/payments-data-details/{payment_id}', 'PaymentController@getContentData');
+Route::get('/payments/edit/{payment_id}', 'PaymentController@edit')->where('payment_id', '[0-9]+');
+Route::get('/payments-data-details/{payment_id}', 'PaymentController@getContentData')->where('payment_id', '[0-9]+');
 Route::post('/payments/export', 'PaymentController@export');
 Route::post('/payments/common-delete', 'PaymentController@commonDelete');
 

@@ -7,6 +7,7 @@ use App\Good;
 use App\Order;
 use App\Payment;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoodController extends Controller
 {
@@ -39,7 +40,7 @@ class GoodController extends Controller
         return response()->json(['good' => $good]);
     }
 
-    public function orders($good_id)
+    public function orders($good_id, Request $request)
     {
         $orders = Order::where('order_good_id', $good_id)->get();
         $orders = $orders->each(function ($item, $key) {
@@ -64,8 +65,11 @@ class GoodController extends Controller
      * получаем список товаров
      * @return mixed
      */
-    public function get2()
+    public function get2(Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         $goods = Good::all();
         $goods = $goods->each(function ($item, $key) {
             $item['id'] = $item->id;
@@ -82,8 +86,11 @@ class GoodController extends Controller
      * @param $good_id
      * @return mixed
      */
-    public function orders2($good_id)
+    public function orders2($good_id, Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         $orders = Order::where('order_good_id', $good_id)->get();
         $orders = $orders->each(function ($item, $key) {
             $item['id'] = $item->id;
@@ -97,12 +104,15 @@ class GoodController extends Controller
     }
 
     /**
-     * списрк оплат для заказа
+     * список оплат для заказа
      * @param $order_id
      * @return mixed
      */
-    public function payment($order_id)
+    public function payment($order_id, Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         $payments = Payment::where('payment_order_id', $order_id)->get();
         $payments = $payments->each(function ($item, $key) {
             $item['id'] = $item->id;
@@ -114,16 +124,22 @@ class GoodController extends Controller
         return response()->json($payments);
     }
 
-    public function view($goodId)
+    public function view($goodId, Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         return response()->json([
             'object' => Good::find($goodId),
             'template' => 'good'
         ]);
     }
 
-    public function orderView($orderId)
+    public function orderView($orderId, Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         return response()->json([
             'object' => Order::find($orderId),
             'template' => 'order'

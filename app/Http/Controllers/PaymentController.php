@@ -7,6 +7,7 @@ use App\Payment;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use Faker;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PaymentController extends Controller
 {
@@ -58,6 +59,9 @@ class PaymentController extends Controller
      */
     public function delete(Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         $validator = Validator::make($request->all(), [
                 'id' => 'required|exists:payments,id',
             ]);
@@ -88,8 +92,11 @@ class PaymentController extends Controller
      * ответ на тестовый запрос на экспорт
      * @return string
      */
-    public function export()
+    public function export(Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         return response()->json([
             'status'=> false,
             'message' => 'Service under constuction!',
@@ -103,6 +110,9 @@ class PaymentController extends Controller
      */
     public function getData(Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         //$payments = new Payment;
         $perPage = ($request->has('per_page') && (int) $request->per_page > 0  ?
             (int) $request->per_page : config('vue.paginate'));
@@ -143,8 +153,11 @@ class PaymentController extends Controller
      * @param $payment_id
      * @return string
      */
-    public function getContentData($payment_id)
+    public function getContentData($payment_id, Request $request )
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         if (!is_int((int) $payment_id)) {
             abort(404);
         }
@@ -170,8 +183,11 @@ class PaymentController extends Controller
      * @param $paymentId
      * @return array
      */
-    public function view($paymentId)
+    public function view($paymentId, Request $request)
     {
+        if (!$request->ajax()) {
+            throw new NotFoundHttpException();
+        }
         return response()->json([
             'object' => Payment::find($paymentId),
             'template' => 'payment'
