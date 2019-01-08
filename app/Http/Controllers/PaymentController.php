@@ -62,12 +62,12 @@ class PaymentController extends Controller
                 'id' => 'required|exists:payments,id',
             ]);
         if ($validator->fails()) {
-            return json_encode(['status'=> false, 'message' => 'Wrong data']);
+            return response()->json(['status'=> false, 'message' => 'Wrong data']);
         }
         if (($request->id % 2) == 0) {
-            return json_encode(['status'=> true, 'message' => 'Payment deleted - test', 'id'=> $request->id]);
+            return response()->json(['status'=> true, 'message' => 'Payment deleted - test', 'id'=> $request->id]);
         } else {
-            return json_encode([
+            return response()->json([
                 'status'=> false,
                 'message' => 'Error deleting odd payment - test',
                 'id'=> $request->id
@@ -90,7 +90,7 @@ class PaymentController extends Controller
      */
     public function export()
     {
-        return json_encode([
+        return response()->json([
             'status'=> false,
             'message' => 'Service under constuction!',
         ]);
@@ -129,7 +129,7 @@ class PaymentController extends Controller
             $order = $request->get('dir') == 1 ? 'asc' : 'desc';
             $payments = $payments->orderBy($request->get('sort'), $order);
         }
-        return json_encode([
+        return response()->json([
             'sql' => $payments->toSql(),
             'bindings' => $payments->getBindings(),
             'payments' => $payments->paginate($perPage),
@@ -152,7 +152,7 @@ class PaymentController extends Controller
         $faker = Faker\Factory::create();
 
         if ($payment) {
-            return json_encode([
+            return response()->json([
                 'payment' => $payment,
                 'order' => $payment->order,
                 'payments' => $payment->order->payments,
@@ -172,10 +172,10 @@ class PaymentController extends Controller
      */
     public function view($paymentId)
     {
-        return [
+        return response()->json([
             'object' => Payment::find($paymentId),
             'template' => 'payment'
-        ];
+        ]);
     }
 
 }

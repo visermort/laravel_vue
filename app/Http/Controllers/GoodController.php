@@ -23,7 +23,7 @@ class GoodController extends Controller
             $item['id'] = $item->id;
             $item['title'] = $item->goods_name.' '.$item->goods_price;
         });
-        return json_encode($goods);
+        return response()->json($goods);
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class GoodController extends Controller
             'goods_name' => $request->name,
             'goods_price' => $request->price,
         ]);
-        return json_encode(['good' => $good]);
+        return response()->json(['good' => $good]);
     }
 
     public function orders($good_id)
@@ -47,7 +47,7 @@ class GoodController extends Controller
             $item['title'] = 'Count '.$item->order_count.' summ '.$item->order_summ.' client '.
                 $item->order_client_name.' '.$item->order_client_address;
         });
-        return json_encode($orders);
+        return response()->json($orders);
     }
 
     /**
@@ -74,7 +74,7 @@ class GoodController extends Controller
             $item['childsLink'] = '/api/orders2/'.$item->id;//ссылка на дочерние
             $item['href'] = '/api/good/'.$item->id;//ссылка на объект
         });
-        return json_encode($goods);
+        return response()->json($goods);
     }
 
     /**
@@ -93,7 +93,7 @@ class GoodController extends Controller
             $item['childsLink'] = '/api/payment/' . $item->id;
             $item['href'] = '/api/order/'.$item->id;//ссылка на объект
         });
-        return json_encode($orders);
+        return response()->json($orders);
     }
 
     /**
@@ -111,23 +111,23 @@ class GoodController extends Controller
             $item['childsLink'] = '';
             $item['href'] = '/api/payments/'.$item->id;//ссылка на объект
         });
-        return json_encode($payments);
+        return response()->json($payments);
     }
 
     public function view($goodId)
     {
-        return [
+        return response()->json([
             'object' => Good::find($goodId),
             'template' => 'good'
-        ];
+        ]);
     }
 
     public function orderView($orderId)
     {
-        return [
+        return response()->json([
             'object' => Order::find($orderId),
             'template' => 'order'
-        ];
+        ]);
     }
 
 }
